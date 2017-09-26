@@ -13,8 +13,9 @@ class State(object):
 	TILE_B = 2
 
 
-	def __init__(self, dim):
+	def __init__(self, dim, min_length):
 		self.dim = dim
+		self.min_length = min_length
 		self.grid = None
 		self.player_last = None
 		self.pos_last = None
@@ -213,10 +214,28 @@ class State(object):
 
 class Env(object):
 	"""docstring for Env"""
-	def __init__(self, dim, controller_1, controller_2):
+
+	GAME_ON = 0
+	GAME_DRAW = 1
+	GAME_WIN_A = 2
+	GAME_WIN_B = 3
+
+
+	def __init__(self, dim, min_length, controller_A, controller_B):
 		self.dim = dim
 		self.state = State(self.dim)
+		self.state.min_length = min_length
+
+		self.status = self.GAME_ON
 		
-		self.controller_1 = controller_1
-		self.controller_2 = controller_2
-		self.state.player_last = controller_2.player_ordinality	# First move by controller_1
+		self.controller_A = controller_A
+		self.controller_B = controller_B
+		self.state.player_last = controller_B.player_ordinality	# First move by controller_A
+
+
+
+	def run(self):
+		while self.status == self.GAME_ON:
+			pass
+
+		return self.status
