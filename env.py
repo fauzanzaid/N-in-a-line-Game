@@ -14,12 +14,21 @@ class State(object):
 		self.dim = dim
 		self.grid = None
 
-		self.create_grid(self, self.dim)
+		if dim:
+			self.create_grid(self, self.dim)
 
 
 	@classmethod
 	def create_grid(cls, state, dim):
 		state.grid = ( (self.TILE_EMPTY)*dim[1] for i in dim[0] )
+
+
+	@classmethod
+	def get_state_from_grid(cls, grid):
+		state = cls(None)
+		state.dim = len(grid), len(grid[0])
+		state.grid = tuple( tuple(row) for row in grid )
+		return state
 
 
 	@classmethod
@@ -29,9 +38,13 @@ class State(object):
 		
 		for i,col in enumerate(grid_transpose):
 			if TILE_EMPTY in col:
-				moves.append( (i, col.index(TILE_EMPTY)) )
+				moves.append(i, col.index(TILE_EMPTY))
 
 		return moves
+
+
+
+
 
 
 
