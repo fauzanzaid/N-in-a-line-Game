@@ -23,7 +23,7 @@ class State(object):
 
 	@classmethod
 	def create_grid(cls, state, dim):
-		state.grid = ( (self.TILE_EMPTY)*dim[1] for i in dim[0] )
+		state.grid = tuple( (cls.TILE_EMPTY,)*dim[1] for i in xrange(dim[0]) )
 
 
 	@classmethod
@@ -49,7 +49,6 @@ class State(object):
 	@classmethod
 	def get_state_on_move(cls, state_cur, move):
 		player, pos = move
-
 		grid = [ list(row) for row in state_cur.grid ]
 
 		if player == PLAYER_A:
