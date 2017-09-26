@@ -14,12 +14,25 @@ class State(object):
 		self.dim = dim
 		self.grid = None
 
-		self.create_grid(self.dim)
+		self.create_grid(self, self.dim)
 
 
-	def create_grid(self, dim):
-		self.grid = [ [self.TILE_EMPTY]*dim[1] for i in dim[0] ]
+	@classmethod
+	def create_grid(cls, state, dim):
+		state.grid = ( (self.TILE_EMPTY)*dim[1] for i in dim[0] )
+
+
+	@classmethod
+	def get_moves(cls, state):
+		moves = []
+		grid_transpose = zip(*state.grid)
 		
+		for i,col in enumerate(grid_transpose):
+			if TILE_EMPTY in col:
+				moves.append( (i, col.index(TILE_EMPTY)) )
+
+		return moves
+
 
 
 class Env(object):
