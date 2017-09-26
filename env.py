@@ -5,6 +5,9 @@
 class State(object):
 	"""docstring for State"""
 
+	PLAYER_A = 0
+	PLAYER_B = 1
+
 	TILE_EMPTY = 0
 	TILE_A = 1
 	TILE_B = 2
@@ -32,19 +35,30 @@ class State(object):
 
 
 	@classmethod
-	def get_moves(cls, state):
-		moves = []
+	def get_move_positions(cls, state):
+		move_positions = []
 		grid_transpose = zip(*state.grid)
 		
 		for i,col in enumerate(grid_transpose):
 			if TILE_EMPTY in col:
-				moves.append(i, col.index(TILE_EMPTY))
+				move_positions.append(col.index(TILE_EMPTY),i)
 
-		return moves
-
-
+		return move_positions
 
 
+	@classmethod
+	def get_state_on_move(cls, state_cur, move):
+		player, pos = move
+
+		grid = [ list(row) for row in state_cur.grid ]
+
+		if player == PLAYER_A:
+			grid[pos[0]][pos[1]] = TILE_A
+		elif player == PLAYER_B:
+			grid[pos[0]][pos[1]] = TILE_B
+
+		state_new = cls.get_state_from_grid(grid)
+		return state_new
 
 
 
