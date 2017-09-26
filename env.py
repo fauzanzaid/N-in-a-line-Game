@@ -60,6 +60,18 @@ class State(object):
 		return state_new
 
 
+	@classmethod
+	def pretty_print(cls, state):
+		for row in state.grid:
+			for tile in row:
+				if tile == cls.TILE_EMPTY:
+					print "- ",
+				elif tile == cls.TILE_A:
+					print "A ",
+				elif tile == cls.TILE_B:
+					print "B ",
+			print ""
+
 
 class Env(object):
 	"""docstring for Env"""
