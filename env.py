@@ -16,7 +16,8 @@ class State(object):
 	def __init__(self, dim):
 		self.dim = dim
 		self.grid = None
-		self.move_last = None
+		self.player_last = None
+		self.pos_last = None
 
 		if dim:
 			self.create_grid(self, self.dim)
@@ -58,7 +59,8 @@ class State(object):
 			grid[pos[0]][pos[1]] = cls.TILE_B
 
 		state_new = cls.get_state_from_grid(grid)
-		state_new.move_last = move
+		state_new.player_last = player
+		state_new.pos_last = pos
 		return state_new
 
 
@@ -211,6 +213,10 @@ class State(object):
 
 class Env(object):
 	"""docstring for Env"""
-	def __init__(self, dim):
+	def __init__(self, dim, controller_1, controller_2):
 		self.dim = dim
 		self.state = State(self.dim)
+		
+		self.controller_1 = controller_1
+		self.controller_2 = controller_2
+		self.state.player_last = controller_2.player_ordinality	# First move by controller_1
