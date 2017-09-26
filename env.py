@@ -41,7 +41,7 @@ class State(object):
 		
 		for i,col in enumerate(grid_transpose):
 			if cls.TILE_EMPTY in col:
-				move_positions.append(col.index(cls.TILE_EMPTY),i)
+				move_positions.append((col.index(cls.TILE_EMPTY),i))
 
 		return move_positions
 
