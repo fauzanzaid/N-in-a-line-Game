@@ -16,6 +16,7 @@ class State(object):
 	def __init__(self, dim):
 		self.dim = dim
 		self.grid = None
+		self.move_last = None
 
 		if dim:
 			self.create_grid(self, self.dim)
@@ -57,6 +58,7 @@ class State(object):
 			grid[pos[0]][pos[1]] = cls.TILE_B
 
 		state_new = cls.get_state_from_grid(grid)
+		state_new.move_last = move
 		return state_new
 
 
@@ -130,7 +132,7 @@ class State(object):
 
 
 	@classmethod
-	def num_inline_dia_up(cls, state, pos):
+	def num_inline_dia_up(cls, snum_inline_dia_downtate, pos):
 		tile_ref = state.grid[pos[0]][pos[1]]
 		length = 1
 
