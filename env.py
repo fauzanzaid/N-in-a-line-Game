@@ -61,16 +61,26 @@ class State(object):
 
 
 	@classmethod
+	def is_state_full(cls, state):
+		for row in state.grid:
+			for tile in row:
+				if tile == cls.TILE_EMPTY:
+					return False
+		return True
+
+
+	@classmethod
 	def pretty_print(cls, state):
 		for row in state.grid:
 			for tile in row:
 				if tile == cls.TILE_EMPTY:
-					print "- ",
+					print "-",
 				elif tile == cls.TILE_A:
-					print "A ",
+					print "A",
 				elif tile == cls.TILE_B:
-					print "B ",
+					print "B",
 			print ""
+
 
 
 class Env(object):
