@@ -100,6 +100,100 @@ class State(object):
 
 
 	@classmethod
+	def num_inline_ver(cls, state, pos):
+		tile_ref = state.grid[pos[0]][pos[1]]
+		length = 1
+
+		# Check upwards
+		pos_chk = [pos[0]-1, pos[1]]
+		while True:
+			if pos_chk[0] < 0:
+				break
+			elif state.grid[pos_chk[0]][pos_chk[1]] != tile_ref:
+				break
+			else:
+				length += 1
+				pos_chk[0] -= 1
+
+		# Check downwards
+		pos_chk = [pos[0]+1, pos[1]]
+		while True:
+			if pos_chk[0] > state.dim[0]-1:
+				break
+			elif state.grid[pos_chk[0]][pos_chk[1]] != tile_ref:
+				break
+			else:
+				length += 1
+				pos_chk[0] += 1
+
+		return length
+
+
+	@classmethod
+	def num_inline_dia_up(cls, state, pos):
+		tile_ref = state.grid[pos[0]][pos[1]]
+		length = 1
+
+		# Check up, right
+		pos_chk = [pos[0]-1, pos[1]+1]
+		while True:
+			if pos_chk[0] < 0 or pos_chk[1] > state.dim[1]-1:
+				break
+			elif state.grid[pos_chk[0]][pos_chk[1]] != tile_ref:
+				break
+			else:
+				length += 1
+				pos_chk[0] -= 1
+				pos_chk[1] += 1
+
+		# Check down, left
+		pos_chk = [pos[0]+1, pos[1]-1]
+		while True:
+			if pos_chk[0] > state.dim[0]-1 or pos_chk[1] < 0:
+				break
+			elif state.grid[pos_chk[0]][pos_chk[1]] != tile_ref:
+				break
+			else:
+				length += 1
+				pos_chk[0] += 1
+				pos_chk[1] -= 1
+
+		return length
+
+
+	@classmethod
+	def num_inline_dia_down(cls, state, pos):
+		tile_ref = state.grid[pos[0]][pos[1]]
+		length = 1
+
+		# Check up, right
+		pos_chk = [pos[0]+1, pos[1]+1]
+		while True:
+			if pos_chk[0] > state.dim[0]-1 or pos_chk[1] > state.dim[1]-1:
+				break
+			elif state.grid[pos_chk[0]][pos_chk[1]] != tile_ref:
+				break
+			else:
+				length += 1
+				pos_chk[0] += 1
+				pos_chk[1] += 1
+
+		# Check down, left
+		pos_chk = [pos[0]-1, pos[1]-1]
+		while True:
+			if pos_chk[0] < 0 or pos_chk[1] < 0:
+				break
+			elif state.grid[pos_chk[0]][pos_chk[1]] != tile_ref:
+				break
+			else:
+				length += 1
+				pos_chk[0] -= 1
+				pos_chk[1] -= 1
+
+		return length
+
+
+	@classmethod
 	def pretty_print(cls, state):
 		for row in state.grid:
 			for tile in row:
