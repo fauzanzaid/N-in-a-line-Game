@@ -40,8 +40,8 @@ class State(object):
 		grid_transpose = zip(*state.grid)
 		
 		for i,col in enumerate(grid_transpose):
-			if TILE_EMPTY in col:
-				move_positions.append(col.index(TILE_EMPTY),i)
+			if cls.TILE_EMPTY in col:
+				move_positions.append(col.index(cls.TILE_EMPTY),i)
 
 		return move_positions
 
@@ -51,10 +51,10 @@ class State(object):
 		player, pos = move
 		grid = [ list(row) for row in state_cur.grid ]
 
-		if player == PLAYER_A:
-			grid[pos[0]][pos[1]] = TILE_A
-		elif player == PLAYER_B:
-			grid[pos[0]][pos[1]] = TILE_B
+		if player == cls.PLAYER_A:
+			grid[pos[0]][pos[1]] = cls.TILE_A
+		elif player == cls.PLAYER_B:
+			grid[pos[0]][pos[1]] = cls.TILE_B
 
 		state_new = cls.get_state_from_grid(grid)
 		return state_new
