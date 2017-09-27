@@ -31,7 +31,7 @@ class State(object):
 
 	@classmethod
 	def get_state_from_grid(cls, grid):
-		state = cls(None)
+		state = cls(None, None)
 		state.dim = len(grid), len(grid[0])
 		state.grid = tuple( tuple(row) for row in grid )
 		return state
@@ -60,6 +60,7 @@ class State(object):
 			grid[pos[0]][pos[1]] = cls.TILE_B
 
 		state_new = cls.get_state_from_grid(grid)
+		state_new.min_length = state_cur.min_length
 		state_new.player_last = player
 		state_new.pos_last = pos
 		return state_new
