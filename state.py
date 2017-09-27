@@ -71,7 +71,7 @@ class State(object):
 		player, pos = move
 		if player == state.player_last:
 			return False
-		if pos not in get_move_positions(state):
+		if pos not in cls.get_move_positions(state):
 			return False
 		return True
 
@@ -92,10 +92,10 @@ class State(object):
 			return False
 
 		num_ailigned = []
-		num_ailigned.append(num_inline_hor(state, pos))
-		num_ailigned.append(num_inline_ver(state, pos))
-		num_ailigned.append(num_inline_dia_up(state, pos))
-		num_ailigned.append(num_inline_dia_down(state, pos))
+		num_ailigned.append(cls.num_inline_hor(state, pos))
+		num_ailigned.append(cls.num_inline_ver(state, pos))
+		num_ailigned.append(cls.num_inline_dia_up(state, pos))
+		num_ailigned.append(cls.num_inline_dia_down(state, pos))
 
 		if max(num_ailigned) >= state.min_length:
 			return True
