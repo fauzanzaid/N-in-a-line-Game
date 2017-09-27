@@ -13,8 +13,7 @@ class Game(object):
 
 	def __init__(self, dim, min_length, controller_A, controller_B):
 		self.dim = dim
-		self.state = State(self.dim)
-		self.state.min_length = min_length
+		self.state = State(self.dim, min_length)
 
 		self.status = self.GAME_ON
 
@@ -22,17 +21,17 @@ class Game(object):
 		self.controller_B = controller_B
 		self.state.player_last = controller_B.player_ordinality	# First move by controller_A
 
-		self.on_move_success = lambda move:None
-		self.on_move_failure = lambda move:None
+		self.on_move_success = lambda state,move:None
+		self.on_move_failure = lambda state,move:None
 
 
 	def make_move(self, move):
 		if not State.is_move_legal(self.state, move):
-			self.on_move_failure(move)
+			self.on_move_failure(self.state, move)
 			return
 
-		self.state = get_state_on_move(self.state, move)
-		self.on_move_success(move)
+		self.state = State.get_state_on_move(self.state, move)
+		self.on_move_success(self.state, move)
 
 
 	def run(self):
@@ -41,13 +40,13 @@ class Game(object):
 				self.status = self.GAME_DRAW
 
 			elif State.is_state_aligned(self.state):
-				if self.state.player_last == State.PLATER_A:
+				if self.state.player_last == State.PLAYER_A:
 					self.status = self.GAME_WIN_A
 				else:
 					self.status = self.GAME_WIN_B
 
 			else:
-				if self.status.player_last == State.PLATER_A:
+				if self.state.player_last == State.PLAYER_A:
 					move = self.controller_B.output(self.state)
 					self.make_move(move)
 				else:
