@@ -1,5 +1,7 @@
 #! /usr/bin/python2
 
+from state import State
+
 class Game(object):
 	"""docstring for Env"""
 
