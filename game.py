@@ -23,6 +23,11 @@ class Game(object):
 		self.state.player_last = controller_B.player_ordinality	# First move by controller_A
 
 
+	def make_move(self, move):
+		if not State.is_move_legal(state, move):
+			return
+		state = get_state_on_move(state, move)
+
 
 	def run(self):
 		while self.status == self.GAME_ON:
@@ -36,9 +41,11 @@ class Game(object):
 					self.status = self.GAME_WIN_B
 
 			else:
-				if self.status,player_last == State.PLATER_A:
-					pass
+				if self.status.player_last == State.PLATER_A:
+					move = self.controller_B.output(state)
+					self.make_move(move)
 				else:
-					pass
+					move = self.controller_A.output(state)
+					self.make_move(move)
 
 		return self.status
