@@ -4,8 +4,8 @@ from ctrlr import Controller
 
 class ControllerManual(Controller):
 	"""docstring for ControllerManual"""
-	def __init__(self, name, get_pos):
-		super(ControllerManual, self).__init__(name)
+	def __init__(self, name, player_ordinality, get_pos):
+		super(ControllerManual, self).__init__(name, player_ordinality)
 		self.get_pos = get_pos
 
 
