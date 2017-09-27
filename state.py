@@ -67,6 +67,16 @@ class State(object):
 
 
 	@classmethod
+	def is_move_legal(cls, state, move):
+		player, pos = move
+		if player == state.player_last:
+			return False
+		if pos not in get_move_positions(state):
+			return False
+		return True
+
+
+	@classmethod
 	def is_state_full(cls, state):
 		for row in state.grid:
 			for tile in row:
