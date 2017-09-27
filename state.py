@@ -76,6 +76,24 @@ class State(object):
 
 
 	@classmethod
+	def is_state_aligned(cls, state):
+		pos = state.pos_last
+		if pos == None:
+			return False
+
+		num_ailigned = []
+		num_ailigned.append(num_inline_hor(state, pos))
+		num_ailigned.append(num_inline_ver(state, pos))
+		num_ailigned.append(num_inline_dia_up(state, pos))
+		num_ailigned.append(num_inline_dia_down(state, pos))
+
+		if max(num_ailigned) >= state.min_length:
+			return True
+		else:
+			return False
+
+
+	@classmethod
 	def num_inline_hor(cls, state, pos):
 		tile_ref = state.grid[pos[0]][pos[1]]
 		length = 1
@@ -136,7 +154,7 @@ class State(object):
 
 
 	@classmethod
-	def num_inline_dia_up(cls, snum_inline_dia_downtate, pos):
+	def num_inline_dia_up(cls, state, pos):
 		tile_ref = state.grid[pos[0]][pos[1]]
 		length = 1
 
