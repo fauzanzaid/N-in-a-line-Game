@@ -22,11 +22,17 @@ class Game(object):
 		self.controller_B = controller_B
 		self.state.player_last = controller_B.player_ordinality	# First move by controller_A
 
+		self.on_move_success = lambda move:None
+		self.on_move_failure = lambda move:None
+
 
 	def make_move(self, move):
-		if not State.is_move_legal(state, move):
+		if not State.is_move_legal(self.state, move):
+			self.on_move_failure(move)
 			return
-		state = get_state_on_move(state, move)
+
+		self.state = get_state_on_move(self.state, move)
+		self.on_move_success(move)
 
 
 	def run(self):
@@ -42,10 +48,10 @@ class Game(object):
 
 			else:
 				if self.status.player_last == State.PLATER_A:
-					move = self.controller_B.output(state)
+					move = self.controller_B.output(self.state)
 					self.make_move(move)
 				else:
-					move = self.controller_A.output(state)
+					move = self.controller_A.output(self.state)
 					self.make_move(move)
 
 		return self.status
