@@ -17,7 +17,7 @@ class Game(object):
 		self.state.min_length = min_length
 
 		self.status = self.GAME_ON
-		
+
 		self.controller_A = controller_A
 		self.controller_B = controller_B
 		self.state.player_last = controller_B.player_ordinality	# First move by controller_A
@@ -26,6 +26,19 @@ class Game(object):
 
 	def run(self):
 		while self.status == self.GAME_ON:
-			pass
+			if State.is_state_full(self.state):
+				self.status = self.GAME_DRAW
+
+			elif State.is_state_aligned(self.state):
+				if self.state.player_last == State.PLATER_A:
+					self.status = self.GAME_WIN_A
+				else:
+					self.status = self.GAME_WIN_B
+
+			else:
+				if self.status,player_last == State.PLATER_A:
+					pass
+				else:
+					pass
 
 		return self.status
