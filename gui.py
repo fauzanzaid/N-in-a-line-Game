@@ -55,3 +55,11 @@ class GUI(object):
 			turtle.fd(self.TILE_SIZE)
 			turtle.lt(90)
 		turtle.pu()
+
+
+	def draw_grid(self):
+		for i in xrange(self.game_dim[1]):
+			for j in xrange(self.game_dim[0]):
+				cood_x = self.P2_COOD_X + i*self.TILE_SIZE
+				cood_y = self.P2_COOD_Y - j*self.TILE_SIZE
+				self.draw_tile((cood_x, cood_y))
