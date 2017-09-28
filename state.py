@@ -75,7 +75,7 @@ class State(object):
 		player, pos = move
 		if player == state.player_last:
 			return False
-		if pos not in cls.get_move_positions(state):
+		if tuple(pos) not in cls.get_move_positions(state):
 			return False
 		return True
 
