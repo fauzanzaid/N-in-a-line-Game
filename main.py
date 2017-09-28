@@ -72,6 +72,7 @@ class Main(threading.Thread):
 			elif arg == self.KEY_QUIT
 				msg = ("quit",())
 				self.qu_cmd.put(msg)
+				break
 
 			elif arg == self.KEY_DRAW_GRID:
 				msg = ("draw_grid",())
