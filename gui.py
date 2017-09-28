@@ -2,6 +2,8 @@
 
 import turtle
 
+from state import State
+
 class GUI(object):
 	"""docstring for GUI"""
 	def __init__(self, dim):
@@ -63,3 +65,24 @@ class GUI(object):
 				cood_x = self.P2_COOD_X + i*self.TILE_SIZE
 				cood_y = self.P2_COOD_Y - j*self.TILE_SIZE
 				self.draw_tile((cood_x, cood_y))
+
+
+	def draw_move(self, move):
+		player, pos = move
+		cood_x = self.P2_COOD_X + pos[1]*self.TILE_SIZE
+		cood_y = self.P2_COOD_Y - pos[0]*self.TILE_SIZE
+		turtle.goto(cood_x, cood_y)
+
+		if player == State.PLAYER_A:
+			turtle.dot(self.COIN_SIZE, self.COIN_COL_A)
+		else:
+			turtle.dot(self.COIN_SIZE, self.COIN_COL_B)
+
+
+	def clear_grid(self):
+		for i in xrange(self.game_dim[1]):
+			for j in xrange(self.game_dim[0]):
+				cood_x = self.P2_COOD_X + i*self.TILE_SIZE
+				cood_y = self.P2_COOD_Y - j*self.TILE_SIZE
+				turtle.goto(cood_x, cood_y)
+				turtle.dot(self.COIN_SIZE, (1,1,1))
