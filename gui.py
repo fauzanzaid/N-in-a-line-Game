@@ -116,6 +116,7 @@ class GUI(threading.Thread):
 			self.scr.onkey(None, self.KEY_PLAY_H)
 			self.scr.onkey(None, self.KEY_QUIT)
 			self.scr.onkey(None, self.KEY_END)
+			self.scr.bye()
 			return
 
 		elif func == "draw_grid":
