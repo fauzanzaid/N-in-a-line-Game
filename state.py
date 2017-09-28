@@ -12,6 +12,10 @@ class State(object):
 	TILE_A = 1
 	TILE_B = 2
 
+	UTIVAL_DRAW = 0
+	UTIVAL_WIN_A = 1
+	UTIVAL_WIN_B = -1
+
 
 	def __init__(self, dim, min_length):
 		self.dim = dim
@@ -74,6 +78,26 @@ class State(object):
 		if pos not in cls.get_move_positions(state):
 			return False
 		return True
+
+
+	@classmethod
+	def is_state_terminal(cls, state):
+		if cls.is_state_aligned(state):
+			return True
+		elif cls.is_state_full(state):
+			return True
+		return False
+
+
+	@classmethod
+	def utility_value(cls, state):
+		if cls.is_state_aligned(state):
+			if state.player_last == State.PLAYER_A:
+				return cls.UTIVAL_WIN_A
+			else:
+				return cls.UTIVAL_WIN_B
+		elif cls.is_state_full(state):
+			return cls.UTIVAL_DRAW
 
 
 	@classmethod

@@ -6,10 +6,6 @@ from state import State
 class ControllerMinMax(Controller):
 	"""docstring for ControllerMinMax"""
 
-	UTIVAL_DRAW = 0
-	UTIVAL_WIN_A = 1
-	UTIVAL_WIN_B = -1
-
 	def __init__(self, name, player_ordinality):
 		super(ControllerMinMax, self).__init__(name, player_ordinality)
 
@@ -33,14 +29,8 @@ class ControllerMinMax(Controller):
 
 
 	def minmax(self, state):
-		if State.is_state_aligned(state):
-			if state.player_last == State.PLAYER_A:
-				return self.UTIVAL_WIN_A
-			else:
-				return self.UTIVAL_WIN_B
-
-		elif State.is_state_full(state):
-			return self.UTIVAL_DRAW
+		if State.is_state_terminal(state):
+			return State.utility_value(state)
 
 		else:
 			utival_best = None
