@@ -33,17 +33,18 @@ class Main(threading.Thread):
 
 
 	def play(self, cont_A, cont_B):
+		self.send_cmd("clear_grid")
 		game = Game(self.game_dim, self.min_length, cont_A, cont_B)
 		game.on_move_success = self.send_cmd_draw_move
 		res = game.run()
 
 
 	def send_cmd_draw_move(self, state, move):
-		self.send_cmd("draw", move)
+		self.send_cmd("draw_move", move)
 
 
 	def send_cmd(self, cmd, *args):
-		msg = (cmd, (args,))
+		msg = (cmd, args)
 		self.qu_cmd.put(msg)
 
 
