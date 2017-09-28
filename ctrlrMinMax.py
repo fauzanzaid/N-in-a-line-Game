@@ -23,7 +23,7 @@ class ControllerMinMax(Controller):
 		if self.player_ordinality == State.PLAYER_A:
 			pos = move_positions[ utivals.index(max(utivals)) ]
 		else:
-			pos = move_positions[ utivals.index(max(utivals)) ]
+			pos = move_positions[ utivals.index(min(utivals)) ]
 
 		return (self.player_ordinality, pos)
 
