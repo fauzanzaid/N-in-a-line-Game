@@ -2,6 +2,7 @@
 
 import threading
 import time
+import sys
 
 from state import State
 from game import Game
@@ -43,17 +44,20 @@ class Main(threading.Thread):
 
 
 	def print_move_failure(self, state, move):
-		print "Play again!", move, "not in", State.move_positions(state) 
+		print "Play again!", move, "not in", State.move_positions(state)
 
 
 	def get_pos(self, state):
 		while True:
 			usr_ip = self.qu_usr_ip.get()
 			time, dev, arg = usr_ip
-			print "Main rcvd", usr_ip, dev
+			print "Main rcvd", usr_ip
 			if dev == "mouse":
-				print dev, arg
 				return arg
+			elif arg == self.KEY_QUIT:
+				msg = ("quit",())
+				self.qu_cmd.put(msg)
+				sys.exit(0)
 
 
 	def play_MM(self):
