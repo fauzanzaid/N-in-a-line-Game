@@ -97,6 +97,29 @@ class GUI(threading.Thread):
 				self.ttl.dot(self.COIN_SIZE, (1,1,1))
 
 
+	def display_info(self, text):
+		old_color = self.ttl.color()
+
+		self.ttl.goto(self.P3_COOD_X - self.P3_PAD, self.P3_COOD_Y + self.P3_PAD)
+		self.ttl.seth(0)
+
+		self.ttl.pd()
+		self.ttl.color((1,1,1),(1,1,1))
+		self.ttl.fill(True)
+		self.ttl.fd(self.P3_WD)
+		self.ttl.rt(90)
+		self.ttl.fd(self.P3_HT)
+		self.ttl.rt(90)
+		self.ttl.fd(self.P3_WD)
+		self.ttl.fill(False)
+		self.ttl.pu()
+
+		self.ttl.color(old_color[0], old_color[1])
+
+		self.ttl.goto(self.P3_COOD_X, self.P3_COOD_Y)
+		self.ttl.write(text)
+
+
 	def display_results(self, dict):
 		pass
 
@@ -123,11 +146,13 @@ class GUI(threading.Thread):
 			self.draw_grid()
 
 		elif func == "draw_move":
-			print args
 			self.draw_move(*args)
 
 		elif func == "clear_grid":
 			self.clear_grid()
+
+		elif func == "display_info":
+			self.display_info(*args)
 
 		elif func == "display_results":
 			self.display_results(*args)
