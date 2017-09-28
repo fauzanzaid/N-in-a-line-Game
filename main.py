@@ -22,6 +22,11 @@ class Main(threading.Thread):
 	KEY_QUIT = "q"
 	KEY_END = "e"
 
+	INFO_INIT = ("Welcome to Align Three! Press a key ...\n"
+	"1: Display board            4: Calculate Statistics\n"
+	"2: Play against Minimax     5: Play against human\n"
+	"3: Play against AlphaBeta   q: Quit (anytime)\n")
+
 	def __init__(self, dim, min_length, qu_usr_ip, qu_cmd):
 		super(Main, self).__init__()
 		self.time_init = time.time()
@@ -56,7 +61,7 @@ class Main(threading.Thread):
 		while True:
 			usr_ip = self.qu_usr_ip.get()
 			time, dev, arg = usr_ip
-			print "Main rcvd", usr_ip
+			# print "Main rcvd", usr_ip
 			if dev == "mouse":
 				return arg
 			elif arg == self.KEY_QUIT:
@@ -83,10 +88,12 @@ class Main(threading.Thread):
 
 
 	def run(self):
+		self.send_cmd("display_info", self.INFO_INIT)
+
 		while True:
 			usr_ip = self.qu_usr_ip.get()
 			time, dev, arg = usr_ip
-			print "Main rcvd", usr_ip
+			# print "Main rcvd", usr_ip
 
 			if dev == "mouse":
 				continue
