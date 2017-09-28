@@ -22,10 +22,18 @@ class Main(threading.Thread):
 	KEY_QUIT = "q"
 	KEY_END = "e"
 
-	INFO_INIT = ("Welcome to Align Three! Press a key ...\n"
-	"1: Display board            4: Calculate Statistics\n"
-	"2: Play against Minimax     5: Play against human\n"
-	"3: Play against AlphaBeta   q: Quit (anytime)\n")
+	INFO_HELP =	(
+	"(1) Display board            (4) Calculate Statistics\n"
+	"(2) Play against Minimax     (5) Play against human\n"
+	"(3) Play against AlphaBeta   (q) Quit (anytime)\n")
+	INFO_INIT = "Welcome to Align Three! Press a key ...\n"+INFO_HELP
+	INFO_DRAW = "Game drawn!\n"+INFO_HELP
+	INFO_WIN_A = "Player M Won! Player H Lost!\n"+INFO_HELP
+	INFO_WIN_B = "Player H Won! Player M Lost!\n"+INFO_HELP
+	INFO_GAME_MM = "Playing against Minimax\n(q) to quit"
+	INFO_GAME_AB = "Playing against AlphaBeta\n(q) to quit"
+	INFO_GAME_H = "Playing against Human\n(q) to quit"
+
 
 	def __init__(self, dim, min_length, qu_usr_ip, qu_cmd):
 		super(Main, self).__init__()
@@ -42,6 +50,13 @@ class Main(threading.Thread):
 		game = Game(self.game_dim, self.min_length, cont_A, cont_B)
 		game.on_move_success = self.send_cmd_draw_move
 		res = game.run()
+
+		if res == Game.GAME_WIN_A:
+			self.send_cmd("display_info", self.INFO_WIN_A)
+		elif res == Game.GAME_WIN_B:
+			self.send_cmd("display_info", self.INFO_WIN_B)
+		else:
+			self.send_cmd("display_info", self.INFO_DRAW)
 
 
 	def send_cmd_draw_move(self, state, move):
@@ -70,18 +85,21 @@ class Main(threading.Thread):
 
 
 	def play_MM(self):
+		self.send_cmd("display_info", self.INFO_GAME_MM)
 		cont_A = ControllerMinMax("MM", State.PLAYER_A)
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
 
 
 	def play_AB(self):
+		self.send_cmd("display_info", self.INFO_GAME_AB)
 		cont_A = ControllerMinMaxAlphaBeta("AB", State.PLAYER_A)
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
 
 
 	def play_H(self):
+		self.send_cmd("display_info", self.INFO_GAME_H)
 		cont_A = ControllerManual("HA", State.PLAYER_A, self.get_pos)
 		cont_B = ControllerManual("HB", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
