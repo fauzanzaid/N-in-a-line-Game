@@ -39,7 +39,11 @@ class Main(threading.Thread):
 
 
 	def send_cmd_draw_move(self, state, move):
-		msg = ("draw_move", (move,))
+		self.send_cmd("draw", move)
+
+
+	def send_cmd(self, cmd, *args):
+		msg = (cmd, (args,))
 		self.qu_cmd.put(msg)
 
 
@@ -55,8 +59,7 @@ class Main(threading.Thread):
 			if dev == "mouse":
 				return arg
 			elif arg == self.KEY_QUIT:
-				msg = ("quit",())
-				self.qu_cmd.put(msg)
+				self.send_cmd("quit")
 				sys.exit(0)
 
 
@@ -88,13 +91,11 @@ class Main(threading.Thread):
 				continue
 
 			elif arg == self.KEY_QUIT:
-				msg = ("quit",())
-				self.qu_cmd.put(msg)
+				self.send_cmd("quit")
 				break
 
 			elif arg == self.KEY_DRAW_GRID:
-				msg = ("draw_grid",())
-				self.qu_cmd.put(msg)
+				self.send_cmd("draw_grid")
 
 			elif arg == self.KEY_PLAY_MM:
 				self.play_MM()
