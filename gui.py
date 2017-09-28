@@ -1,14 +1,20 @@
 #! /usr/bin/python2
 
 import turtle
+import threading
+import time
 
 from state import State
 
-class GUI(object):
+class GUI(threading.Thread):
 	"""docstring for GUI"""
-	def __init__(self, dim):
+	def __init__(self, dim, qu_usr_ip, qu_cmd):
+
+		self.time_init = time.time()
 
 		self.game_dim = dim
+		self.qu_usr_ip = qu_usr_ip
+		self.qu_cmd = qu_cmd
 
 		self.TILE_SIZE = 40
 		self.COIN_SIZE = 30
@@ -39,24 +45,17 @@ class GUI(object):
 		self.WINDOW_HT = max(self.P1_HT, self.P2_HT) + self.P3_HT
 		self.WINDOW_WD = max(self.P1_WD + self.P2_WD, self.P3_WD)
 
-		turtle.title("Align three")
-		turtle.setup(width=self.WINDOW_WD, height=self.WINDOW_HT)
-		turtle.setworldcoordinates(0, 0, self.WINDOW_WD, self.WINDOW_HT)
-
-		turtle.ht()
-		turtle.pu()
-		turtle.speed(0)
-		turtle.delay(0)
+		self.DISPATCH_DELAY = 200
 
 
 	def draw_tile(self, cood):
-		turtle.goto(cood[0]-self.TILE_SIZE/2.0, cood[1]-self.TILE_SIZE/2.0)
-		turtle.seth(0)
-		turtle.pd()
+		self.ttl.goto(cood[0]-self.TILE_SIZE/2.0, cood[1]-self.TILE_SIZE/2.0)
+		self.ttl.seth(0)
+		self.ttl.pd()
 		for i in xrange(4):
-			turtle.fd(self.TILE_SIZE)
-			turtle.lt(90)
-		turtle.pu()
+			self.ttl.fd(self.TILE_SIZE)
+			self.ttl.lt(90)
+		self.ttl.pu()
 
 
 	def draw_grid(self):
@@ -71,12 +70,12 @@ class GUI(object):
 		player, pos = move
 		cood_x = self.P2_COOD_X + pos[1]*self.TILE_SIZE
 		cood_y = self.P2_COOD_Y - pos[0]*self.TILE_SIZE
-		turtle.goto(cood_x, cood_y)
+		self.ttl.goto(cood_x, cood_y)
 
 		if player == State.PLAYER_A:
-			turtle.dot(self.COIN_SIZE, self.COIN_COL_A)
+			self.ttl.dot(self.COIN_SIZE, self.COIN_COL_A)
 		else:
-			turtle.dot(self.COIN_SIZE, self.COIN_COL_B)
+			self.ttl.dot(self.COIN_SIZE, self.COIN_COL_B)
 
 
 	def clear_grid(self):
@@ -84,5 +83,67 @@ class GUI(object):
 			for j in xrange(self.game_dim[0]):
 				cood_x = self.P2_COOD_X + i*self.TILE_SIZE
 				cood_y = self.P2_COOD_Y - j*self.TILE_SIZE
-				turtle.goto(cood_x, cood_y)
-				turtle.dot(self.COIN_SIZE, (1,1,1))
+				self.ttl.goto(cood_x, cood_y)
+				self.ttl.dot(self.COIN_SIZE, (1,1,1))
+
+
+	def display_results(self, dict):
+		pass
+
+
+	def cmd_dispatcher(self):
+		if self.qu_cmd.empty():
+			self.scr.ontimer(cmd_dispatcher, self.DISPATCH_DELAY)
+			return
+
+		func, args = self.qu_cmd.get()
+		if func == "quit":
+			return
+		elif func == "draw_grid":
+			self.draw_grid()
+		elif func == "draw_move":
+			self.draw_move(*args)
+		elif func == "clear_grid":
+			self.clear_grid()
+		elif func == "display_results":
+			self.display_results(*args)
+
+		self.scr.ontimer(cmd_dispatcher, self.DISPATCH_DELAY)
+
+
+	def send_mouse_click(self, x, y):
+		msg = (time.time()-self.time_init, "mouse", (x,y))
+		self.qu_usr_ip.put(msg)
+
+
+	def send_key_press(self, key):
+		msg = (time.time()-self.time_init, "keypress", key)
+		self.qu_usr_ip.put(msg)
+
+	
+	def run():
+		self.ttl = turtle.Turtle()
+		self.scr = turtle.Screen()
+
+		self.scr.setup(width=self.WINDOW_WD, height=self.WINDOW_HT)
+		self.scr.setworldcoordinates(0, 0, self.WINDOW_WD, self.WINDOW_HT)
+
+		self.scr.title("Align three")
+
+		self.ttl.ht()
+		self.ttl.pu()
+		self.ttl.speed(0)
+		self.ttl.delay(0)
+
+		self.draw_grid()
+
+		self.scr.onclick(send_mouse_click)
+		self.scr.onkey(lambda:send_key_press("1"), "1")
+		self.scr.onkey(lambda:send_key_press("2"), "2")
+		self.scr.onkey(lambda:send_key_press("3"), "3")
+		self.scr.onkey(lambda:send_key_press("4"), "4")
+		self.scr.onkey(lambda:send_key_press("q"), "q")
+		
+		self.scr.ontimer(cmd_dispatcher, self.DISPATCH_DELAY)
+
+		turtle.mainloop()
