@@ -8,6 +8,15 @@ from state import State
 
 class GUI(threading.Thread):
 	"""docstring for GUI"""
+
+	KEY_DRAW_GRID = "1"
+	KEY_PLAY_MM = "2"
+	KEY_PLAY_AB = "3"
+	KEY_DISP_RES = "4"
+	KEY_PLAY_H = "5"
+	KEY_QUIT = "q"
+	KEY_END = "e"
+
 	def __init__(self, dim, qu_usr_ip, qu_cmd):
 
 		self.time_init = time.time()
@@ -120,7 +129,7 @@ class GUI(threading.Thread):
 		msg = (time.time()-self.time_init, "keypress", key)
 		self.qu_usr_ip.put(msg)
 
-	
+
 	def run():
 		self.ttl = turtle.Turtle()
 		self.scr = turtle.Screen()
@@ -138,12 +147,14 @@ class GUI(threading.Thread):
 		self.draw_grid()
 
 		self.scr.onclick(send_mouse_click)
-		self.scr.onkey(lambda:send_key_press("1"), "1")
-		self.scr.onkey(lambda:send_key_press("2"), "2")
-		self.scr.onkey(lambda:send_key_press("3"), "3")
-		self.scr.onkey(lambda:send_key_press("4"), "4")
-		self.scr.onkey(lambda:send_key_press("q"), "q")
-		
+		self.scr.onkey(lambda:send_key_press(self.KEY_DRAW_GRID), self.KEY_DRAW_GRID)
+		self.scr.onkey(lambda:send_key_press(self.KEY_PLAY_MM), self.KEY_PLAY_MM)
+		self.scr.onkey(lambda:send_key_press(self.KEY_PLAY_AB), self.KEY_PLAY_AB)
+		self.scr.onkey(lambda:send_key_press(self.KEY_PLAY_H), self.KEY_PLAY_H)
+		self.scr.onkey(lambda:send_key_press(self.KEY_DISP_RES), self.KEY_DISP_RES)
+		self.scr.onkey(lambda:send_key_press(self.KEY_QUIT), self.KEY_QUIT)
+		self.scr.onkey(lambda:send_key_press(self.KEY_END), self.KEY_END)
+
 		self.scr.ontimer(cmd_dispatcher, self.DISPATCH_DELAY)
 
 		turtle.mainloop()
