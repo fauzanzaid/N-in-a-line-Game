@@ -33,3 +33,10 @@ class GUI(object):
 		self.WINDOW_WD = max(self.P1_WD + self.P2_WD, self.P3_WD)
 
 		turtle.title("Align three")
+		turtle.setup(width=self.WINDOW_WD, height=self.WINDOW_HT)
+		turtle.setworldcoordinates(0, self.WINDOW_HT, self.WINDOW_WD, 0)
+
+		turtle.ht()
+		turtle.pu()
+		turtle.speed(0)
+		turtle.delay(0)
