@@ -18,7 +18,8 @@ class GUI(threading.Thread):
 	KEY_END = "e"
 
 	def __init__(self, dim, qu_usr_ip, qu_cmd):
-
+		super(GUI, self).__init__()
+		
 		self.time_init = time.time()
 
 		self.game_dim = dim
@@ -102,19 +103,26 @@ class GUI(threading.Thread):
 
 	def cmd_dispatcher(self):
 		if self.qu_cmd.empty():
-			self.scr.ontimer(cmd_dispatcher, self.DISPATCH_DELAY)
+			self.scr.ontimer(self.cmd_dispatcher, self.DISPATCH_DELAY)
 			return
 
 		func, args = self.qu_cmd.get()
 		if func == "quit":
-			scr.onclick(None)
-			scr.onkey(None)
+			self.scr.onclick(None)
+			self.scr.onkey(None, self.KEY_DRAW_GRID)
+			self.scr.onkey(None, self.KEY_PLAY_MM)
+			self.scr.onkey(None, self.KEY_PLAY_AB)
+			self.scr.onkey(None, self.KEY_DISP_RES)
+			self.scr.onkey(None, self.KEY_PLAY_H)
+			self.scr.onkey(None, self.KEY_QUIT)
+			self.scr.onkey(None, self.KEY_END)
 			return
 
 		elif func == "draw_grid":
 			self.draw_grid()
 
 		elif func == "draw_move":
+			print args
 			self.draw_move(*args)
 
 		elif func == "clear_grid":
@@ -123,11 +131,16 @@ class GUI(threading.Thread):
 		elif func == "display_results":
 			self.display_results(*args)
 
-		self.scr.ontimer(cmd_dispatcher, self.DISPATCH_DELAY)
+		self.scr.ontimer(self.cmd_dispatcher, self.DISPATCH_DELAY)
 
 
 	def send_mouse_click(self, x, y):
-		msg = (time.time()-self.time_init, "mouse", (x,y))
+		pos = [-1,-1]
+
+		pos[1] = int(round(float(x-self.P2_COOD_X)/self.TILE_SIZE))
+		pos[0] = int(round(float(self.P2_COOD_Y-y)/self.TILE_SIZE))
+
+		msg = (time.time()-self.time_init, "mouse", pos)
 		self.qu_usr_ip.put(msg)
 
 
@@ -136,7 +149,7 @@ class GUI(threading.Thread):
 		self.qu_usr_ip.put(msg)
 
 
-	def run():
+	def run(self):
 		self.ttl = turtle.Turtle()
 		self.scr = turtle.Screen()
 
@@ -148,19 +161,21 @@ class GUI(threading.Thread):
 		self.ttl.ht()
 		self.ttl.pu()
 		self.ttl.speed(0)
-		self.ttl.delay(0)
+		self.scr.delay(0)
 
-		self.draw_grid()
+		# self.draw_grid()
 
-		self.scr.onclick(send_mouse_click)
-		self.scr.onkey(lambda:send_key_press(self.KEY_DRAW_GRID), self.KEY_DRAW_GRID)
-		self.scr.onkey(lambda:send_key_press(self.KEY_PLAY_MM), self.KEY_PLAY_MM)
-		self.scr.onkey(lambda:send_key_press(self.KEY_PLAY_AB), self.KEY_PLAY_AB)
-		self.scr.onkey(lambda:send_key_press(self.KEY_PLAY_H), self.KEY_PLAY_H)
-		self.scr.onkey(lambda:send_key_press(self.KEY_DISP_RES), self.KEY_DISP_RES)
-		self.scr.onkey(lambda:send_key_press(self.KEY_QUIT), self.KEY_QUIT)
-		self.scr.onkey(lambda:send_key_press(self.KEY_END), self.KEY_END)
+		self.scr.ontimer(self.cmd_dispatcher, self.DISPATCH_DELAY)
+		self.scr.onclick(self.send_mouse_click)
+		self.scr.onkey(lambda:self.send_key_press("x"), "x")
+		self.scr.onkey(lambda:self.send_key_press(self.KEY_DRAW_GRID), self.KEY_DRAW_GRID)
+		self.scr.onkey(lambda:self.send_key_press(self.KEY_PLAY_MM), self.KEY_PLAY_MM)
+		self.scr.onkey(lambda:self.send_key_press(self.KEY_PLAY_AB), self.KEY_PLAY_AB)
+		self.scr.onkey(lambda:self.send_key_press(self.KEY_PLAY_H), self.KEY_PLAY_H)
+		self.scr.onkey(lambda:self.send_key_press(self.KEY_DISP_RES), self.KEY_DISP_RES)
+		self.scr.onkey(lambda:self.send_key_press(self.KEY_QUIT), self.KEY_QUIT)
+		self.scr.onkey(lambda:self.send_key_press(self.KEY_END), self.KEY_END)
+		self.scr.listen()
 
-		self.scr.ontimer(cmd_dispatcher, self.DISPATCH_DELAY)
 
-		turtle.mainloop()
+		turtle.done()
