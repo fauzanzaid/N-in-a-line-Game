@@ -30,17 +30,18 @@ class GUI(threading.Thread):
 		self.COIN_SIZE = 30
 		self.COIN_COL_A = (1,0,0)
 		self.COIN_COL_B = (0,1,0)
+		self.LINE_SPACE = 10
 
 		self.P1_PAD = 20
-		self.P1_HT = self.P1_PAD*2 + 20*12
+		self.P1_HT = self.P1_PAD*2 + self.LINE_SPACE*12
 		self.P1_WD = self.P1_PAD*2 + 200
 
-		self.P2_PAD = 20
+		self.P2_PAD = 60
 		self.P2_HT = self.P2_PAD*2 + self.TILE_SIZE*(dim[0]-1)
 		self.P2_WD = self.P2_PAD*2 + self.TILE_SIZE*(dim[1]-1)
 
 		self.P3_PAD = 20
-		self.P3_HT = self.P3_PAD*2 + 20
+		self.P3_HT = self.P3_PAD*2 + 70
 		self.P3_WD = self.P3_PAD*2 + 600
 
 		self.P1_COOD_X = + self.P1_PAD + max(0, self.P3_WD - self.P1_WD - self.P2_WD)/2.0
@@ -54,6 +55,7 @@ class GUI(threading.Thread):
 
 		self.WINDOW_HT = max(self.P1_HT, self.P2_HT) + self.P3_HT
 		self.WINDOW_WD = max(self.P1_WD + self.P2_WD, self.P3_WD)
+		self.WINDOW_PAD = 20
 
 		self.DISPATCH_DELAY = 200
 
@@ -104,24 +106,28 @@ class GUI(threading.Thread):
 		self.ttl.seth(0)
 
 		self.ttl.pd()
-		self.ttl.color((1,1,1),(1,1,1))
+		self.ttl.color((0.9,0.9,0.9),(1,1,1))
 		self.ttl.fill(True)
 		self.ttl.fd(self.P3_WD)
 		self.ttl.rt(90)
 		self.ttl.fd(self.P3_HT)
 		self.ttl.rt(90)
 		self.ttl.fd(self.P3_WD)
+		self.ttl.rt(90)
+		self.ttl.fd(self.P3_HT)
 		self.ttl.fill(False)
 		self.ttl.pu()
 
 		self.ttl.color(old_color[0], old_color[1])
 
-		self.ttl.goto(self.P3_COOD_X, self.P3_COOD_Y)
-		self.ttl.write(text)
+		self.ttl.goto(self.P3_COOD_X, self.P3_COOD_Y - self.P3_HT + 2*self.P3_PAD)
+		self.ttl.write(text, font=("Mono", 8, "normal"))
 
 
 	def display_results(self, dict):
-		pass
+		for i in xrange(1,13):
+			self.ttl.goto(P1_COOD_X, P2_COOD_Y - i*self.LINE_SPACE)
+			self.ttl.write("R"+str(i)+"\t: "+dict[i], font=("Mono", 8, "normal"))
 
 
 	def cmd_dispatcher(self):
@@ -179,8 +185,8 @@ class GUI(threading.Thread):
 		self.ttl = turtle.Turtle()
 		self.scr = turtle.Screen()
 
-		self.scr.setup(width=self.WINDOW_WD, height=self.WINDOW_HT)
-		self.scr.setworldcoordinates(0, 0, self.WINDOW_WD, self.WINDOW_HT)
+		self.scr.setup(width=self.WINDOW_WD+2*self.WINDOW_PAD, height=self.WINDOW_HT+2*self.WINDOW_PAD)
+		self.scr.setworldcoordinates(0-self.WINDOW_PAD, 0-self.WINDOW_PAD, self.WINDOW_WD+self.WINDOW_PAD, self.WINDOW_HT+self.WINDOW_PAD)
 
 		self.scr.title("Align three")
 
