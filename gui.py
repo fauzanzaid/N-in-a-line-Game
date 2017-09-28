@@ -107,13 +107,19 @@ class GUI(threading.Thread):
 
 		func, args = self.qu_cmd.get()
 		if func == "quit":
+			scr.onclick(None)
+			scr.onkey(None)
 			return
+
 		elif func == "draw_grid":
 			self.draw_grid()
+
 		elif func == "draw_move":
 			self.draw_move(*args)
+
 		elif func == "clear_grid":
 			self.clear_grid()
+
 		elif func == "display_results":
 			self.display_results(*args)
 
