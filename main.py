@@ -31,45 +31,59 @@ class Main(threading.Thread):
 		self.qu_cmd = qu_cmd
 
 
-	def play(self, min_length, cont_A, cont_B):
-		pass
+	def play(self, cont_A, cont_B):
+		game = Game(self.game_dim, self.min_length, cont_A, cont_B)
+		game.on_move_success = self.send_cmd_draw_move
+		res = game.run()
+
+
+	def send_cmd_draw_move(self, state, move):
+		msg = ("draw_move", (move,))
+		self.qu_cmd.put(msg)
+
+
+	def print_move_failure(self, state, move):
+		print "Play again!", move, "not in", State.move_positions(state) 
 
 
 	def get_pos(self, state):
 		while True:
 			usr_ip = self.qu_usr_ip.get()
 			time, dev, arg = usr_ip
+			print "Main rcvd", usr_ip, dev
 			if dev == "mouse":
+				print dev, arg
 				return arg
 
 
 	def play_MM(self):
 		cont_A = ControllerMinMax("MM", State.PLAYER_A)
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
-		self.play(self.min_length, cont_A, cont_B)
+		self.play(cont_A, cont_B)
 
 
 	def play_AB(self):
 		cont_A = ControllerMinMaxAlphaBeta("AB", State.PLAYER_A)
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
-		self.play(self.min_length, cont_A, cont_B)
+		self.play(cont_A, cont_B)
 
 
 	def play_H(self):
 		cont_A = ControllerManual("HA", State.PLAYER_A, self.get_pos)
 		cont_B = ControllerManual("HB", State.PLAYER_B, self.get_pos)
-		self.play(self.min_length, cont_A, cont_B)
+		self.play(cont_A, cont_B)
 
 
 	def run(self):
 		while True:
 			usr_ip = self.qu_usr_ip.get()
 			time, dev, arg = usr_ip
+			print "Main rcvd", usr_ip
 
 			if dev == "mouse":
 				continue
 
-			elif arg == self.KEY_QUIT
+			elif arg == self.KEY_QUIT:
 				msg = ("quit",())
 				self.qu_cmd.put(msg)
 				break
