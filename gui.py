@@ -33,7 +33,7 @@ class GUI(threading.Thread):
 		self.LINE_SPACE = 16
 
 		self.P1_PAD = 20
-		self.P1_HT = self.P1_PAD*2 + self.LINE_SPACE*12
+		self.P1_HT = self.P1_PAD*2 + self.LINE_SPACE*13
 		self.P1_WD = self.P1_PAD*2 + 200
 
 		self.P2_PAD = 60
@@ -57,7 +57,7 @@ class GUI(threading.Thread):
 		self.WINDOW_WD = max(self.P1_WD + self.P2_WD, self.P3_WD)
 		self.WINDOW_PAD = 20
 
-		self.DISPATCH_DELAY = 200
+		self.DISPATCH_DELAY = 1
 
 
 	def draw_tile(self, cood):
@@ -166,7 +166,7 @@ class GUI(threading.Thread):
 
 		self.ttl.color(old_color[0], old_color[1])
 
-		for i in xrange(1,13):
+		for i in xrange(1,14):
 			self.ttl.goto(self.P1_COOD_X, self.P1_COOD_Y - i*self.LINE_SPACE)
 			self.ttl.write("R"+str(i)+"\t: "+str(stats[i]), font=("Mono", 8, "normal"))
 
