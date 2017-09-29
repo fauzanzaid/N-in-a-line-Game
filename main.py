@@ -28,8 +28,8 @@ class Main(threading.Thread):
 	"(3) Play against AlphaBeta   (q) Quit (anytime)\n")
 	INFO_INIT = "Welcome to Align Three! Press a key ...\n"+INFO_HELP
 	INFO_DRAW = "Game drawn!\n"+INFO_HELP
-	INFO_WIN_A = "Player M Won! Player H Lost!\n"+INFO_HELP
-	INFO_WIN_B = "Player H Won! Player M Lost!\n"+INFO_HELP
+	INFO_WIN_A = "Player M(Red) Won! Player H(Green) Lost!\n"+INFO_HELP
+	INFO_WIN_B = "Player H(Green) Won! Player M(Red) Lost!\n"+INFO_HELP
 	INFO_GAME_MM = "Playing against Minimax\n(q) to quit"
 	INFO_GAME_AB = "Playing against AlphaBeta\n(q) to quit"
 	INFO_GAME_H = "Playing against Human\n(q) to quit"
@@ -44,6 +44,8 @@ class Main(threading.Thread):
 		self.qu_usr_ip = qu_usr_ip
 		self.qu_cmd = qu_cmd
 
+		self.stats = {i:None for i in xrange(1,13)}
+
 
 	def play(self, cont_A, cont_B):
 		self.send_cmd("clear_grid")
@@ -51,11 +53,13 @@ class Main(threading.Thread):
 		game.on_move_success = self.send_cmd_draw_move
 		res = game.run()
 
+		print res
+
 		if res == Game.GAME_WIN_A:
 			self.send_cmd("display_info", self.INFO_WIN_A)
 		elif res == Game.GAME_WIN_B:
 			self.send_cmd("display_info", self.INFO_WIN_B)
-		else:
+		elif res == Game.GAME_DRAW:
 			self.send_cmd("display_info", self.INFO_DRAW)
 
 
@@ -133,4 +137,4 @@ class Main(threading.Thread):
 				self.play_H()
 
 			elif arg == self.KEY_DISP_RES:
-				pass
+				self.send_cmd("display_results", self.stats)
