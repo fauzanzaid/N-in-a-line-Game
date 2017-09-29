@@ -151,13 +151,29 @@ class Main(threading.Thread):
 		self.play(cont_A, cont_B)
 
 
+	def calculate_state_size(self):
+		state = State(self.game_dim, self.min_length)
+		state.player_last = State.PLAYER_A
+		state.pos_last = (0,0)
+
+		size = 0
+		size += sys.getsizeof(state)
+		size += sys.getsizeof(state.dim)
+		size += sys.getsizeof(state.min_length)
+		size += sys.getsizeof(state.grid)
+		size += sys.getsizeof(state.player_last)
+		size += sys.getsizeof(state.pos_last)
+
+		return size
+
+
 	def calculate_stats(self):
 		if self.stats[1] != 0:
 			self.stats[7] = (self.stats[1]-self.stats[6])/float(self.stats[1])
 			self.stats[9] = self.stats[6]/float(self.stats[1])
 		if self.stats[4] != 0:
 			self.stats[13] = self.stats[8]/self.stats[4]
-		self.stats[2] = sys.getsizeof(State(self.game_dim, self.min_length))
+		self.stats[2] = self.calculate_state_size()
 
 
 	def run(self):
