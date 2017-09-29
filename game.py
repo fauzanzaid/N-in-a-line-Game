@@ -36,14 +36,15 @@ class Game(object):
 
 	def run(self):
 		while self.status == self.GAME_ON:
-			if State.is_state_full(self.state):
-				self.status = self.GAME_DRAW
 
-			elif State.is_state_aligned(self.state):
+			if State.is_state_aligned(self.state):
 				if self.state.player_last == State.PLAYER_A:
 					self.status = self.GAME_WIN_A
 				else:
 					self.status = self.GAME_WIN_B
+
+			elif State.is_state_full(self.state):
+				self.status = self.GAME_DRAW
 
 			else:
 				if self.state.player_last == State.PLAYER_A:
