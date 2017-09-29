@@ -11,7 +11,7 @@ class Game(object):
 	GAME_WIN_B = 3
 
 
-	def __init__(self, dim, min_length, controller_A, controller_B):
+	def __init__(self, dim, min_length, controller_A, controller_B, first):
 		self.dim = dim
 		self.state = State(self.dim, min_length)
 
@@ -19,7 +19,11 @@ class Game(object):
 
 		self.controller_A = controller_A
 		self.controller_B = controller_B
-		self.state.player_last = controller_B.player_ordinality	# First move by controller_A
+		
+		if first == 0:
+			self.state.player_last = controller_B.player_ordinality	# First move by controller_A
+		else:
+			self.state.player_last = controller_A.player_ordinality	# First move by controller_B
 
 		self.on_move_success = lambda state,move:None
 		self.on_move_failure = lambda state,move:None

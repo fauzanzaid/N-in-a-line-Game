@@ -3,6 +3,7 @@
 import threading
 import time
 import sys
+import random
 
 from state import State
 from game import Game
@@ -25,17 +26,18 @@ class Main(threading.Thread):
 	INFO_HELP =	(
 	"(1) Display board            (4) Calculate Statistics\n"
 	"(2) Play against Minimax     (5) Play against human\n"
-	"(3) Play against AlphaBeta   (q) Quit (anytime)\n")
+	"(3) Play against AlphaBeta   (q) Quit\n")
 	INFO_INIT = "Welcome to Align Three! Press a key ...\n"+INFO_HELP
 	INFO_DRAW = "Game drawn!\n"+INFO_HELP
 	INFO_WIN_A = "Player M(Red) Won! Player H(Green) Lost!\n"+INFO_HELP
 	INFO_WIN_B = "Player H(Green) Won! Player M(Red) Lost!\n"+INFO_HELP
-	INFO_GAME_MM = "Playing against Minimax\n(q) to quit"
+	INFO_GAME_MM = "Playing against Minimax\nPress (q) to quit"
 	INFO_GAME_AB = "Playing against AlphaBeta\n(q) to quit"
-	INFO_GAME_H = "Playing against Human\n(q) to quit"
+	INFO_GAME_H = "Playing against Human\nPress (q) to quit"
+	INFO_TURN_A = "Player M's turn (Red)\nPress (q) to quit"
+	INFO_TURN_B = "Player H's turn (Green)\nPress (q) to quit"
 
-
-	def __init__(self, dim, min_length, qu_usr_ip, qu_cmd):
+	def __init__(self, dim, min_length, qu_usr_ip, qu_cmd, first):
 		super(Main, self).__init__()
 		self.time_init = time.time()
 
@@ -43,14 +45,30 @@ class Main(threading.Thread):
 		self.min_length = min_length
 		self.qu_usr_ip = qu_usr_ip
 		self.qu_cmd = qu_cmd
+		self.first = first
 
 		self.stats = {i:None for i in xrange(1,13)}
 
 
 	def play(self, cont_A, cont_B):
 		self.send_cmd("clear_grid")
-		game = Game(self.game_dim, self.min_length, cont_A, cont_B)
-		game.on_move_success = self.send_cmd_draw_move
+
+		if self.first == 0:
+			first = 0
+		elif self.first == 1:
+			first = 1
+		else:
+			first = random.randint(0,1)
+
+		time.sleep(1)
+
+		if first == 0:
+			self.send_cmd("display_info", self.INFO_TURN_A)
+		else:
+			self.send_cmd("display_info", self.INFO_TURN_B)
+
+		game = Game(self.game_dim, self.min_length, cont_A, cont_B, first)
+		game.on_move_success = self.send_cmd_on_success
 		res = game.run()
 
 		if res == Game.GAME_WIN_A:
@@ -61,8 +79,12 @@ class Main(threading.Thread):
 			self.send_cmd("display_info", self.INFO_DRAW)
 
 
-	def send_cmd_draw_move(self, state, move):
+	def send_cmd_on_success(self, state, move):
 		self.send_cmd("draw_move", move)
+		if move[0] == State.PLAYER_A:
+			self.send_cmd("display_info", self.INFO_TURN_B)
+		else:
+			self.send_cmd("display_info", self.INFO_TURN_A)
 
 
 	def send_cmd(self, cmd, *args):

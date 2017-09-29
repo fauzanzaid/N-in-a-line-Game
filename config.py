@@ -13,3 +13,4 @@ class Config():
 
 	board_dimensions				= (4,4)
 	minimum_coins_aligned_to_win	= 3
+	first							= 0

@@ -11,9 +11,10 @@ qu_cmd = Queue.Queue()
 
 dim = Config.board_dimensions
 min_length = Config.minimum_coins_aligned_to_win
+first = Config.first
 
 gui = GUI(dim, qu_usr_ip, qu_cmd)
-main = Main(dim, min_length, qu_usr_ip, qu_cmd)
+main = Main(dim, min_length, qu_usr_ip, qu_cmd, first)
 
 main.start()
 gui.start()
