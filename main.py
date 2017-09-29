@@ -53,8 +53,6 @@ class Main(threading.Thread):
 		game.on_move_success = self.send_cmd_draw_move
 		res = game.run()
 
-		print res
-
 		if res == Game.GAME_WIN_A:
 			self.send_cmd("display_info", self.INFO_WIN_A)
 		elif res == Game.GAME_WIN_B:
