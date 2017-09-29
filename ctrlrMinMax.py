@@ -1,5 +1,7 @@
 #! /usr/bin/python2
 
+import time
+
 from ctrlr import Controller
 from state import State
 
@@ -8,15 +10,19 @@ class ControllerMinMax(Controller):
 
 	def __init__(self, name, player_ordinality):
 		super(ControllerMinMax, self).__init__(name, player_ordinality)
+		self.stats["d"] = 0
+		self.stats["n"] = 0
 
 
 	def output(self, state):
+		time_init = time.time()
+
 		move_positions = State.get_move_positions(state)
 		utivals = []
 
 		for pos in move_positions:
 			state_new = State.get_state_on_move(state, (self.player_ordinality, pos))
-			utival = self.minmax(state_new)
+			utival = self.minmax(state_new, 0)
 			utivals.append(utival)
 
 		pos = None
@@ -25,10 +31,17 @@ class ControllerMinMax(Controller):
 		else:
 			pos = move_positions[ utivals.index(min(utivals)) ]
 
+		time_end = time.time()
+		self.stats["t"] += time_end - time_init
+
 		return (self.player_ordinality, pos)
 
 
-	def minmax(self, state):
+	def minmax(self, state, stack_depth):
+		self.stats["n"] += 1
+		if stack_depth > self.stats["d"]:
+			self.stats["d"] = stack_depth
+
 		if State.is_state_terminal(state):
 			return State.utility_value(state)
 
@@ -46,7 +59,7 @@ class ControllerMinMax(Controller):
 			move_positions = State.get_move_positions(state)
 			for pos in move_positions:
 				state_new = State.get_state_on_move(state, (player_cur,pos))
-				utival = self.minmax(state_new)
+				utival = self.minmax(state_new, stack_depth+1)
 
 				if player_cur == State.PLAYER_A:
 					if utival > utival_best:

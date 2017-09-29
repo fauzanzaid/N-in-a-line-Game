@@ -10,5 +10,10 @@ class ControllerManual(Controller):
 
 
 	def output(self, state):
+		time_init = time.time()
+
 		pos = self.get_pos(state)
 		return (self.player_ordinality, pos)
+
+		time_end = time.time()
+		self.stats["t"] += time_end - time_init
