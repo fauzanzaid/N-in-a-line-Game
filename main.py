@@ -83,6 +83,8 @@ class Main(threading.Thread):
 			# print "Main rcvd", usr_ip
 			if dev == "mouse":
 				return arg
+			elif arg == self.KEY_DRAW_GRID:
+				self.send_cmd("draw_grid")
 			elif arg == self.KEY_QUIT:
 				self.send_cmd("quit")
 				sys.exit(0)
