@@ -4,12 +4,13 @@ import Queue
 
 from gui import GUI
 from main import Main
+from config import Config
 
 qu_usr_ip = Queue.Queue()
 qu_cmd = Queue.Queue()
 
-dim = (4,4)
-min_length = 3
+dim = Config.board_dimensions
+min_length = Config.minimum_coins_aligned_to_win
 
 gui = GUI(dim, qu_usr_ip, qu_cmd)
 main = Main(dim, min_length, qu_usr_ip, qu_cmd)
