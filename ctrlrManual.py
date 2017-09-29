@@ -1,5 +1,7 @@
 #! /usr/bin/python2
 
+import time
+
 from ctrlr import Controller
 
 class ControllerManual(Controller):
@@ -13,7 +15,8 @@ class ControllerManual(Controller):
 		time_init = time.time()
 
 		pos = self.get_pos(state)
-		return (self.player_ordinality, pos)
 
 		time_end = time.time()
 		self.stats["t"] += time_end - time_init
+
+		return (self.player_ordinality, pos)

@@ -5,7 +5,7 @@ class Controller(object):
 	def __init__(self, name, player_ordinality):
 		self.name = name
 		self.player_ordinality = player_ordinality
-		self.stats = {"time":0}
+		self.stats = {"t":0}
 
 	def output(self, state):
 		raise NotImplementedError()
