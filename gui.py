@@ -30,7 +30,7 @@ class GUI(threading.Thread):
 		self.COIN_SIZE = 30
 		self.COIN_COL_A = (1,0,0)
 		self.COIN_COL_B = (0,1,0)
-		self.LINE_SPACE = 10
+		self.LINE_SPACE = 16
 
 		self.P1_PAD = 20
 		self.P1_HT = self.P1_PAD*2 + self.LINE_SPACE*12
@@ -71,6 +71,26 @@ class GUI(threading.Thread):
 
 
 	def draw_grid(self):
+
+		old_color = self.ttl.color()
+
+		self.ttl.goto(self.P2_COOD_X - self.P2_PAD, self.P2_COOD_Y + self.P2_PAD)
+		self.ttl.seth(0)
+
+		self.ttl.pd()
+		self.ttl.color((0.9,0.9,0.9),(1,1,1))
+		self.ttl.fd(self.P2_WD)
+		self.ttl.rt(90)
+		self.ttl.fd(self.P2_HT)
+		self.ttl.rt(90)
+		self.ttl.fd(self.P2_WD)
+		self.ttl.rt(90)
+		self.ttl.fd(self.P2_HT)
+		self.ttl.pu()
+
+		self.ttl.color(old_color[0], old_color[1])
+
+
 		for i in xrange(self.game_dim[1]):
 			for j in xrange(self.game_dim[0]):
 				cood_x = self.P2_COOD_X + i*self.TILE_SIZE
@@ -124,10 +144,31 @@ class GUI(threading.Thread):
 		self.ttl.write(text, font=("Mono", 8, "normal"))
 
 
-	def display_results(self, dict):
+	def display_results(self, stats):
+
+		old_color = self.ttl.color()
+
+		self.ttl.goto(self.P1_COOD_X - self.P1_PAD, self.P1_COOD_Y + self.P1_PAD)
+		self.ttl.seth(0)
+
+		self.ttl.pd()
+		self.ttl.color((0.9,0.9,0.9),(1,1,1))
+		self.ttl.fill(True)
+		self.ttl.fd(self.P1_WD)
+		self.ttl.rt(90)
+		self.ttl.fd(self.P1_HT)
+		self.ttl.rt(90)
+		self.ttl.fd(self.P1_WD)
+		self.ttl.rt(90)
+		self.ttl.fd(self.P1_HT)
+		self.ttl.fill(False)
+		self.ttl.pu()
+
+		self.ttl.color(old_color[0], old_color[1])
+
 		for i in xrange(1,13):
-			self.ttl.goto(P1_COOD_X, P2_COOD_Y - i*self.LINE_SPACE)
-			self.ttl.write("R"+str(i)+"\t: "+dict[i], font=("Mono", 8, "normal"))
+			self.ttl.goto(self.P1_COOD_X, self.P1_COOD_Y - i*self.LINE_SPACE)
+			self.ttl.write("R"+str(i)+"\t: "+str(stats[i]), font=("Mono", 8, "normal"))
 
 
 	def cmd_dispatcher(self):
@@ -182,6 +223,7 @@ class GUI(threading.Thread):
 
 
 	def run(self):
+
 		self.ttl = turtle.Turtle()
 		self.scr = turtle.Screen()
 
