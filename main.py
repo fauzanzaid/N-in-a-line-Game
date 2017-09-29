@@ -36,6 +36,9 @@ class Main(threading.Thread):
 	INFO_GAME_H = "Playing against Human\nPress (q) to quit"
 	INFO_TURN_A = "Player M's turn (Red)\nPress (q) to quit"
 	INFO_TURN_B = "Player H's turn (Green)\nPress (q) to quit"
+	INFO_TURN_RE_A = "That move is not legal! Try again\n"+INFO_TURN_A
+	INFO_TURN_RE_B = "That move is not legal! Try again\n"+INFO_TURN_B
+
 
 	def __init__(self, dim, min_length, qu_usr_ip, qu_cmd, first):
 		super(Main, self).__init__()
@@ -68,7 +71,8 @@ class Main(threading.Thread):
 			self.send_cmd("display_info", self.INFO_TURN_B)
 
 		game = Game(self.game_dim, self.min_length, cont_A, cont_B, first)
-		game.on_move_success = self.send_cmd_on_success
+		game.on_move_success = self.send_cmd_on_move_success
+		game.on_move_failure = self.send_cmd_on_move_failure
 		res = game.run()
 
 		if res == Game.GAME_WIN_A:
@@ -79,12 +83,19 @@ class Main(threading.Thread):
 			self.send_cmd("display_info", self.INFO_DRAW)
 
 
-	def send_cmd_on_success(self, state, move):
+	def send_cmd_on_move_success(self, state, move):
 		self.send_cmd("draw_move", move)
 		if move[0] == State.PLAYER_A:
 			self.send_cmd("display_info", self.INFO_TURN_B)
 		else:
 			self.send_cmd("display_info", self.INFO_TURN_A)
+
+
+	def send_cmd_on_move_failure(self, state, move):
+		if move[0] == State.PLAYER_A:
+			self.send_cmd("display_info", self.INFO_TURN_RE_A)
+		else:
+			self.send_cmd("display_info", self.INFO_TURN_RE_B)
 
 
 	def send_cmd(self, cmd, *args):

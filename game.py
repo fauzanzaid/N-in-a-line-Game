@@ -19,7 +19,7 @@ class Game(object):
 
 		self.controller_A = controller_A
 		self.controller_B = controller_B
-		
+
 		if first == 0:
 			self.state.player_last = controller_B.player_ordinality	# First move by controller_A
 		else:
