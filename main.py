@@ -26,7 +26,7 @@ class Main(threading.Thread):
 	INFO_HELP =	(
 	"(1) Display board            (4) Calculate Statistics\n"
 	"(2) Play against Minimax     (5) Play against human\n"
-	"(3) Play against AlphaBeta   (q) Quit\n")
+	"(3) Play against AlphaBeta   (q) Quit")
 	INFO_INIT = "Welcome to Align Three! Press a key ...\n"+INFO_HELP
 	INFO_DRAW = "Game drawn!\n"+INFO_HELP
 	INFO_WIN_A = "Player M(Red) Won! Player H(Green) Lost!\n"+INFO_HELP
@@ -50,7 +50,7 @@ class Main(threading.Thread):
 		self.qu_cmd = qu_cmd
 		self.first = first
 
-		self.stats = {i:None for i in xrange(1,13)}
+		self.stats = {i:0 for i in xrange(1,14)}
 
 
 	def play(self, cont_A, cont_B):
@@ -127,6 +127,12 @@ class Main(threading.Thread):
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
 
+		self.stats[1] = cont_A.stats["n"]
+		self.stats[3] = cont_A.stats["d"]
+		self.stats[4] = cont_A.stats["t"] + cont_B.stats["t"]
+		self.stats[5] = cont_A.stats["n"]/(cont_A.stats["t"]*1000)
+
+
 
 	def play_AB(self):
 		self.send_cmd("display_info", self.INFO_GAME_AB)
@@ -134,12 +140,24 @@ class Main(threading.Thread):
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
 
+		self.stats[6] = cont_A.stats["n"]
+		self.stats[8] = cont_A.stats["t"] + cont_B.stats["t"]
+
 
 	def play_H(self):
 		self.send_cmd("display_info", self.INFO_GAME_H)
 		cont_A = ControllerManual("HA", State.PLAYER_A, self.get_pos)
 		cont_B = ControllerManual("HB", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
+
+
+	def calculate_stats(self):
+		if self.stats[1] != 0:
+			self.stats[7] = (self.stats[1]-self.stats[6])/float(self.stats[1])
+			self.stats[9] = self.stats[6]/float(self.stats[1])
+		if self.stats[4] != 0:
+			self.stats[13] = self.stats[8]/self.stats[4]
+		self.stats[2] = sys.getsizeof(State(self.game_dim, self.min_length))
 
 
 	def run(self):
@@ -170,4 +188,5 @@ class Main(threading.Thread):
 				self.play_H()
 
 			elif arg == self.KEY_DISP_RES:
+				self.calculate_stats()
 				self.send_cmd("display_results", self.stats)
