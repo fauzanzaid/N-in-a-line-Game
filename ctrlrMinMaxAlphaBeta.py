@@ -2,42 +2,17 @@
 
 import time
 
-from ctrlr import Controller
+from ctrlrMinMax import ControllerMinMax
 from state import State
 
-class ControllerMinMaxAlphaBeta(Controller):
+class ControllerMinMaxAlphaBeta(ControllerMinMax):
 	"""docstring for ControllerMinMaxAlphaBeta"""
 
-	def __init__(self, name, player_ordinality):
-		super(ControllerMinMaxAlphaBeta, self).__init__(name, player_ordinality)
-		self.stats["d"] = 0
-		self.stats["n"] = 0
+	def __init__(self, name, player_ordinality, precalc_utivals_enabled = True):
+		super(ControllerMinMaxAlphaBeta, self).__init__(name, player_ordinality, precalc_utivals_enabled)
 
 
-	def output(self, state):
-		time_init = time.time()
-
-		move_positions = State.get_move_positions(state)
-		utivals = []
-
-		for pos in move_positions:
-			state_new = State.get_state_on_move(state, (self.player_ordinality, pos))
-			utival = self.minmax(state_new, float("-inf"), float("inf"), 0)
-			utivals.append(utival)
-
-		pos = None
-		if self.player_ordinality == State.PLAYER_A:
-			pos = move_positions[ utivals.index(max(utivals)) ]
-		else:
-			pos = move_positions[ utivals.index(min(utivals)) ]
-
-		time_end = time.time()
-		self.stats["t"] += time_end - time_init
-
-		return (self.player_ordinality, pos)
-
-
-	def minmax(self, state, alpha, beta, stack_depth):
+	def minmax(self, state, stack_depth, alpha=float("-inf"), beta=float("inf")):
 		self.stats["n"] += 1
 		if stack_depth > self.stats["d"]:
 			self.stats["d"] = stack_depth
@@ -59,7 +34,7 @@ class ControllerMinMaxAlphaBeta(Controller):
 			move_positions = State.get_move_positions(state)
 			for pos in move_positions:
 				state_new = State.get_state_on_move(state, (player_cur,pos))
-				utival = self.minmax(state_new, alpha, beta, stack_depth+1)
+				utival = self.minmax(state_new, stack_depth+1, alpha, beta)
 
 				# max node
 				if player_cur == State.PLAYER_A:
