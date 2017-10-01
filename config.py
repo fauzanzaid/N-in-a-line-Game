@@ -9,7 +9,7 @@ class Config():
 	
 	You can make the  board as  large as you
 	want. However, AI player will take a lot
-	of time to caculate  moves if board size
+	of time to calculate moves if board size
 	is greater  than 4 x 4. You can  make it
 	larger to play  against  another  friend
 	if you want without this problem.
@@ -25,10 +25,27 @@ class Config():
 	an integer
 
 	If 0, player M (Red) gets to play first
-	in  every  game. If 0, player H (Green)
+	in  every  game. If 1, player H (Green)
 	gets to play first. For  other  values,
 	the  player is choosen  randomly before
 	every new game.
+	----------------------------------------
+	== precalc ==
+	boolean
+
+	If True,  games of dim 4 x 4 against AI,
+	where M plays first (first = 0) will use
+	precalculated values for first two moves
+	by AI to significantly speed up gameplay
+	----------------------------------------
+	== rdmz ==
+	boolean
+
+	If False, AI chooses the first choice in
+	the  array of  best  moves. If  True, AI
+	will randomly  choose one  choice in the
+	array of best moves. Makes for a more
+	interesting gameplay!
 	----------------------------------------
 
 	"""
