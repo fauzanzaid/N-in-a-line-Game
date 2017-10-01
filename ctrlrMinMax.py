@@ -1,6 +1,7 @@
 #! /usr/bin/python2
 
 import time
+import random
 
 from ctrlr import Controller
 from state import State
@@ -8,12 +9,13 @@ from state import State
 class ControllerMinMax(Controller):
 	"""docstring for ControllerMinMax"""
 
-	def __init__(self, name, player_ordinality, precalc_utivals_enabled = True):
+	def __init__(self, name, player_ordinality, precalc_utivals_enabled=True, move_randomize=True):
 		super(ControllerMinMax, self).__init__(name, player_ordinality)
 		self.stats["d"] = 0
 		self.stats["n"] = 0
 
 		self.precalc_utivals_enabled = precalc_utivals_enabled
+		self.move_randomize = move_randomize
 
 		if self.precalc_utivals_enabled == True:
 			self.precalc_utivals_dict = {}
@@ -36,13 +38,28 @@ class ControllerMinMax(Controller):
 				utival = self.minmax(state_new, 0)
 				utivals.append(utival)
 
-		print tuple(utivals)
-
-		pos = None
+		move_positions_best = None
 		if self.player_ordinality == State.PLAYER_A:
-			pos = move_positions[ utivals.index(max(utivals)) ]
+			utival_best = float("-inf")
+			for i,utival in enumerate(utivals):
+				if utival > utival_best:
+					utival_best = utival
+					move_positions_best = [move_positions[i]]
+				elif utival == utival_best:
+					move_positions_best.append(move_positions[i])
 		else:
-			pos = move_positions[ utivals.index(min(utivals)) ]
+			utival_best = float("inf")
+			for i,utival in enumerate(utivals):
+				if utival < utival_best:
+					utival_best = utival
+					move_positions_best = [move_positions[i]]
+				elif utival == utival_best:
+					move_positions_best.append(move_positions[i])
+
+		if self.move_randomize == True:
+			pos = random.choice(move_positions_best)
+		else:
+			pos = move_positions_best[0]
 
 		time_end = time.time()
 		self.stats["t"] += time_end - time_init

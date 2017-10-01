@@ -8,8 +8,8 @@ from state import State
 class ControllerMinMaxAlphaBeta(ControllerMinMax):
 	"""docstring for ControllerMinMaxAlphaBeta"""
 
-	def __init__(self, name, player_ordinality, precalc_utivals_enabled = True):
-		super(ControllerMinMaxAlphaBeta, self).__init__(name, player_ordinality, precalc_utivals_enabled)
+	def __init__(self, name, player_ordinality, precalc_utivals_enabled=True, move_randomize=True):
+		super(ControllerMinMaxAlphaBeta, self).__init__(name, player_ordinality, precalc_utivals_enabled, move_randomize)
 
 
 	def minmax(self, state, stack_depth, alpha=float("-inf"), beta=float("inf")):
