@@ -40,7 +40,7 @@ class Main(threading.Thread):
 	INFO_TURN_RE_B = "That move is not legal! Try again\n"+INFO_TURN_B
 
 
-	def __init__(self, dim, min_length, qu_usr_ip, qu_cmd, first):
+	def __init__(self, dim, min_length, qu_usr_ip, qu_cmd, first, precalc, rdmz):
 		super(Main, self).__init__()
 		self.time_init = time.time()
 
@@ -49,6 +49,8 @@ class Main(threading.Thread):
 		self.qu_usr_ip = qu_usr_ip
 		self.qu_cmd = qu_cmd
 		self.first = first
+		self.precalc = precalc
+		self.rdmz = rdmz
 
 		self.stats = {i:0 for i in xrange(1,14)}
 
@@ -123,7 +125,7 @@ class Main(threading.Thread):
 
 	def play_MM(self):
 		self.send_cmd("display_info", self.INFO_GAME_MM)
-		cont_A = ControllerMinMax("MM", State.PLAYER_A)
+		cont_A = ControllerMinMax("MM", State.PLAYER_A, self.precalc, self.rdmz)
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
 
@@ -136,7 +138,7 @@ class Main(threading.Thread):
 
 	def play_AB(self):
 		self.send_cmd("display_info", self.INFO_GAME_AB)
-		cont_A = ControllerMinMaxAlphaBeta("AB", State.PLAYER_A)
+		cont_A = ControllerMinMaxAlphaBeta("AB", State.PLAYER_A, self.precalc, self.rdmz)
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
 
