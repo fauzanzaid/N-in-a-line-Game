@@ -180,7 +180,7 @@ class Main(threading.Thread):
 		self.stats[2] = "344 bytes"
 		self.stats[3] = "15"
 		self.stats[4] = "378.611 s"
-		self.stats[5] = "22.136 nodes/us"
+		self.stats[5] = "22.136 nodes/ms"
 		self.stats[6] = "1823534 nodes"
 		self.stats[7] = "74.77% saving"
 		self.stats[8] = "129.285 s"
