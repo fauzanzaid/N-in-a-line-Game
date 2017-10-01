@@ -184,10 +184,10 @@ class Main(threading.Thread):
 		self.stats[6] = "1823534 nodes"
 		self.stats[7] = "74.77% saving"
 		self.stats[8] = "129.285 s"
-		self.stats[9] = "Alpha Beta takes 25.22% of Minimax's memory"
-		self.stats[10] = ""
-		self.stats[11] = "Minimax:10 times AlphaBeta:10 times"
-		self.stats[12] = "Minimax:1.0      AlphaBeta:1.0"
+		self.stats[9] = "AlphaBeta takes 25.22% of Minimax's memory"
+		self.stats[10] = "Minimax: 340.995 s    AlphaBeta: 89.559 s"
+		self.stats[11] = "Minimax: 10 times     AlphaBeta: 10 times"
+		self.stats[12] = "Minimax: 1.0          AlphaBeta: 1.0"
 		self.stats[13] = "AlphaBeta takes 34.14% of Minimax's time"
 
 
