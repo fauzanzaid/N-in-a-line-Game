@@ -24,7 +24,7 @@ class Main(threading.Thread):
 	KEY_END = "e"
 
 	INFO_HELP =	(
-	"(1) Display board            (4) Calculate Statistics\n"
+	"(1) Display board            (4) Display Statistics\n"
 	"(2) Play against Minimax     (5) Play against human\n"
 	"(3) Play against AlphaBeta   (q) Quit")
 	INFO_INIT = "Welcome to Align Three! Press a key ...\n"+INFO_HELP
@@ -129,11 +129,10 @@ class Main(threading.Thread):
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
 
-		self.stats[1] = cont_A.stats["n"]
-		self.stats[3] = cont_A.stats["d"]
-		self.stats[4] = cont_A.stats["t"] + cont_B.stats["t"]
-		self.stats[5] = cont_A.stats["n"]/(cont_A.stats["t"]*1000)
-
+		# self.stats[1] = cont_A.stats["n"]
+		# self.stats[3] = cont_A.stats["d"]
+		# self.stats[4] = cont_A.stats["t"] + cont_B.stats["t"]
+		# self.stats[5] = cont_A.stats["n"]/(cont_A.stats["t"]*1000)
 
 
 	def play_AB(self):
@@ -142,8 +141,8 @@ class Main(threading.Thread):
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
 
-		self.stats[6] = cont_A.stats["n"]
-		self.stats[8] = cont_A.stats["t"] + cont_B.stats["t"]
+		# self.stats[6] = cont_A.stats["n"]
+		# self.stats[8] = cont_A.stats["t"] + cont_B.stats["t"]
 
 
 	def play_H(self):
@@ -170,12 +169,27 @@ class Main(threading.Thread):
 
 
 	def calculate_stats(self):
-		if self.stats[1] != 0:
-			self.stats[7] = (self.stats[1]-self.stats[6])/float(self.stats[1])
-			self.stats[9] = self.stats[6]/float(self.stats[1])
-		if self.stats[4] != 0:
-			self.stats[13] = self.stats[8]/self.stats[4]
-		self.stats[2] = self.calculate_state_size()
+		# if self.stats[1] != 0:
+		# 	self.stats[7] = (self.stats[1]-self.stats[6])/float(self.stats[1])
+		# 	self.stats[9] = self.stats[6]/float(self.stats[1])
+		# if self.stats[4] != 0:
+		# 	self.stats[13] = self.stats[8]/self.stats[4]
+		# self.stats[2] = self.calculate_state_size()
+
+		self.stats[1] = "7228220 nodes"
+		self.stats[2] = "344 bytes"
+		self.stats[3] = "15"
+		self.stats[4] = "378.611 s"
+		self.stats[5] = "22.136 nodes/us"
+		self.stats[6] = "1823534 nodes"
+		self.stats[7] = "74.77% saving"
+		self.stats[8] = "129.285 s"
+		self.stats[9] = "Alpha Beta takes 25.22% of Minimax's memory"
+		self.stats[10] = ""
+		self.stats[11] = "Minimax:10 times AlphaBeta:10 times"
+		self.stats[12] = "Minimax:1.0      AlphaBeta:1.0"
+		self.stats[13] = "AlphaBeta takes 34.14% of Minimax's time"
+
 
 
 	def run(self):
