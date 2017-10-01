@@ -262,3 +262,22 @@ class State(object):
 				elif tile == cls.TILE_B:
 					print "B",
 			print ""
+
+
+	def __attr(self):
+		state_attr = (self.dim, self.min_length, self.grid, self.player_last)
+		return state_attr
+
+
+	def __eq__(self, other):
+		if type(other) is type(self):
+			return self.__attr() == other.__attr()
+		return False
+
+
+	def __ne__(self, other):
+		return not self == other
+
+
+	def __hash__(self):
+		return hash(self.__attr())
