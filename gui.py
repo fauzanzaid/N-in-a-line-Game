@@ -34,7 +34,7 @@ class GUI(threading.Thread):
 
 		self.P1_PAD = 20
 		self.P1_HT = self.P1_PAD*2 + self.LINE_SPACE*13
-		self.P1_WD = self.P1_PAD*2 + 200
+		self.P1_WD = self.P1_PAD*2 + 400
 
 		self.P2_PAD = 60
 		self.P2_HT = self.P2_PAD*2 + self.TILE_SIZE*(dim[0]-1)
@@ -42,7 +42,7 @@ class GUI(threading.Thread):
 
 		self.P3_PAD = 20
 		self.P3_HT = self.P3_PAD*2 + 70
-		self.P3_WD = self.P3_PAD*2 + 600
+		self.P3_WD = self.P3_PAD*2 + 400
 
 		self.P1_COOD_X = + self.P1_PAD + max(0, self.P3_WD - self.P1_WD - self.P2_WD)/2.0
 		self.P1_COOD_Y = - self.P1_PAD + self.P1_HT + self.P3_HT + max(0, self.P2_HT - self.P1_HT)/2.0
