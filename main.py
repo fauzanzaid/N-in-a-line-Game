@@ -57,11 +57,12 @@ class Main(threading.Thread):
 
 
 	def play(self, cont_A, cont_B):
+		time.sleep(1)
+
 		self.send_cmd("clear_grid")
-		self.send_cmd("draw_grid")
 		if self.results_displayed == True:
 			self.send_cmd("display_results", self.stats)
-
+		self.send_cmd("draw_grid")
 
 		if self.first == 0:
 			first = 0
@@ -69,8 +70,6 @@ class Main(threading.Thread):
 			first = 1
 		else:
 			first = random.randint(0,1)
-
-		time.sleep(1)
 
 		if first == 0:
 			self.send_cmd("display_info", self.INFO_TURN_A)

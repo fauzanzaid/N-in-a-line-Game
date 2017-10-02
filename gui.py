@@ -100,6 +100,8 @@ class GUI(threading.Thread):
 		self.ttl.pensize(old_size)
 		self.ttl.color(old_color[0], old_color[1])
 
+		self.scr.update()
+
 
 		for i in xrange(self.game_dim[1]):
 			for j in xrange(self.game_dim[0]):
@@ -119,6 +121,8 @@ class GUI(threading.Thread):
 			self.ttl.dot(self.COIN_SIZE-4, self.COIN_COL_A)
 		else:
 			self.ttl.dot(self.COIN_SIZE-4, self.COIN_COL_B)
+
+		self.scr.update()
 
 
 	def clear_grid(self):
@@ -149,6 +153,8 @@ class GUI(threading.Thread):
 		self.ttl.goto(self.P3_COOD_X, self.P3_COOD_Y - self.P3_HT + 2*self.P3_PAD)
 		self.ttl.write(text, font=("Mono", 8, "normal"))
 
+		self.scr.update()
+
 
 	def display_results(self, stats):
 		old_color = self.ttl.color()
@@ -174,6 +180,8 @@ class GUI(threading.Thread):
 		for i in xrange(1,14):
 			self.ttl.goto(self.P1_COOD_X, self.P1_COOD_Y - i*self.LINE_SPACE)
 			self.ttl.write("R"+str(i)+"\t: "+str(stats[i]), font=("Mono", 8, "normal"))
+
+		self.scr.update()
 
 
 	def cmd_dispatcher(self):
@@ -240,6 +248,7 @@ class GUI(threading.Thread):
 		self.ttl.ht()
 		self.ttl.pu()
 		self.ttl.speed(0)
+		self.ttl.tracer(0,0)
 		self.scr.delay(0)
 
 		# self.draw_grid()
