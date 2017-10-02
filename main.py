@@ -76,6 +76,8 @@ class Main(threading.Thread):
 		else:
 			self.send_cmd("display_info", self.INFO_TURN_B)
 
+		self.send_cmd("scr_update")
+
 		game = Game(self.game_dim, self.min_length, cont_A, cont_B, first)
 		game.on_move_success = self.send_cmd_on_move_success
 		game.on_move_failure = self.send_cmd_on_move_failure
@@ -87,6 +89,7 @@ class Main(threading.Thread):
 			self.send_cmd("display_info", self.INFO_WIN_B)
 		elif res == Game.GAME_DRAW:
 			self.send_cmd("display_info", self.INFO_DRAW)
+		self.send_cmd("scr_update")
 
 
 	def send_cmd_on_move_success(self, state, move):
@@ -95,6 +98,7 @@ class Main(threading.Thread):
 			self.send_cmd("display_info", self.INFO_TURN_B)
 		else:
 			self.send_cmd("display_info", self.INFO_TURN_A)
+		self.send_cmd("scr_update")
 
 
 	def send_cmd_on_move_failure(self, state, move):
@@ -102,6 +106,7 @@ class Main(threading.Thread):
 			self.send_cmd("display_info", self.INFO_TURN_RE_A)
 		else:
 			self.send_cmd("display_info", self.INFO_TURN_RE_B)
+		self.send_cmd("scr_update")
 
 
 	def send_cmd(self, cmd, *args):
@@ -120,8 +125,6 @@ class Main(threading.Thread):
 			# print "Main rcvd", usr_ip
 			if dev == "mouse":
 				return arg
-			elif arg == self.KEY_DRAW_GRID:
-				self.send_cmd("draw_grid")
 			elif arg == self.KEY_QUIT:
 				self.send_cmd("quit")
 				sys.exit(0)
@@ -129,6 +132,7 @@ class Main(threading.Thread):
 
 	def play_MM(self):
 		self.send_cmd("display_info", self.INFO_GAME_MM)
+		self.send_cmd("scr_update")
 		cont_A = ControllerMinMax("MM", State.PLAYER_A, self.precalc, self.rdmz)
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
@@ -141,6 +145,7 @@ class Main(threading.Thread):
 
 	def play_AB(self):
 		self.send_cmd("display_info", self.INFO_GAME_AB)
+		self.send_cmd("scr_update")
 		cont_A = ControllerMinMaxAlphaBeta("AB", State.PLAYER_A, self.precalc, self.rdmz)
 		cont_B = ControllerManual("H", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
@@ -151,6 +156,7 @@ class Main(threading.Thread):
 
 	def play_H(self):
 		self.send_cmd("display_info", self.INFO_GAME_H)
+		self.send_cmd("scr_update")
 		cont_A = ControllerManual("HA", State.PLAYER_A, self.get_pos)
 		cont_B = ControllerManual("HB", State.PLAYER_B, self.get_pos)
 		self.play(cont_A, cont_B)
@@ -198,6 +204,7 @@ class Main(threading.Thread):
 
 	def run(self):
 		self.send_cmd("display_info", self.INFO_INIT)
+		self.send_cmd("scr_update")
 
 		while True:
 			usr_ip = self.qu_usr_ip.get()
@@ -213,6 +220,7 @@ class Main(threading.Thread):
 
 			elif arg == self.KEY_DRAW_GRID:
 				self.send_cmd("draw_grid")
+				self.send_cmd("scr_update")
 
 			elif arg == self.KEY_PLAY_MM:
 				self.play_MM()
@@ -226,4 +234,5 @@ class Main(threading.Thread):
 			elif arg == self.KEY_DISP_RES:
 				self.calculate_stats()
 				self.send_cmd("display_results", self.stats)
+				self.send_cmd("scr_update")
 				self.results_displayed = True

@@ -122,11 +122,13 @@ class GUI(threading.Thread):
 		else:
 			self.ttl.dot(self.COIN_SIZE-4, self.COIN_COL_B)
 
-		self.scr.update()
-
 
 	def clear_grid(self):
 		self.ttl.clear()
+
+
+	def scr_update(self):
+		self.scr.update()
 
 
 	def display_info(self, text):
@@ -153,10 +155,8 @@ class GUI(threading.Thread):
 		self.ttl.goto(self.P3_COOD_X, self.P3_COOD_Y - self.P3_HT + 2*self.P3_PAD)
 		self.ttl.write(text, font=("Mono", 8, "normal"))
 
-		self.scr.update()
 
-
-	def display_results(self, stats):
+	def display_results(self, stats, *args):
 		old_color = self.ttl.color()
 
 		self.ttl.goto(self.P1_COOD_X - self.P1_PAD, self.P1_COOD_Y + self.P1_PAD)
@@ -180,8 +180,6 @@ class GUI(threading.Thread):
 		for i in xrange(1,14):
 			self.ttl.goto(self.P1_COOD_X, self.P1_COOD_Y - i*self.LINE_SPACE)
 			self.ttl.write("R"+str(i)+"\t: "+str(stats[i]), font=("Mono", 8, "normal"))
-
-		self.scr.update()
 
 
 	def cmd_dispatcher(self):
@@ -210,6 +208,9 @@ class GUI(threading.Thread):
 
 		elif func == "clear_grid":
 			self.clear_grid()
+
+		elif func == "scr_update":
+			self.scr_update()
 
 		elif func == "display_info":
 			self.display_info(*args)
