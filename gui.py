@@ -88,6 +88,13 @@ class GUI(threading.Thread):
 		self.ttl.fd(self.P2_HT)
 		self.ttl.pu()
 
+		self.ttl.goto(self.P2_COOD_X - self.TILE_SIZE/2.0, self.P2_COOD_Y + self.TILE_SIZE*3/4.0)
+		self.ttl.seth(0)
+		self.ttl.color((1,0,0))
+		self.ttl.pd()
+		self.ttl.fd(self.game_dim[1]*self.TILE_SIZE)
+		self.ttl.pu()
+
 		self.ttl.color(old_color[0], old_color[1])
 
 
