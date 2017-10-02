@@ -114,10 +114,11 @@ class GUI(threading.Thread):
 		cood_y = self.P2_COOD_Y - pos[0]*self.TILE_SIZE
 		self.ttl.goto(cood_x, cood_y)
 
+		self.ttl.dot(self.COIN_SIZE, (0,0,0))
 		if player == State.PLAYER_A:
-			self.ttl.dot(self.COIN_SIZE, self.COIN_COL_A)
+			self.ttl.dot(self.COIN_SIZE-4, self.COIN_COL_A)
 		else:
-			self.ttl.dot(self.COIN_SIZE, self.COIN_COL_B)
+			self.ttl.dot(self.COIN_SIZE-4, self.COIN_COL_B)
 
 
 	def clear_grid(self):
