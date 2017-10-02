@@ -29,13 +29,13 @@ class Main(threading.Thread):
 	"(3) Play against AlphaBeta   (q) Quit")
 	INFO_INIT = "Welcome to Align Three! Press a key ...\n"+INFO_HELP
 	INFO_DRAW = "Game drawn!\n"+INFO_HELP
-	INFO_WIN_A = "Player M(Red) Won! Player H(Green) Lost!\n"+INFO_HELP
-	INFO_WIN_B = "Player H(Green) Won! Player M(Red) Lost!\n"+INFO_HELP
+	INFO_WIN_A = "Player M(Green) Won! Player H(Blue) Lost!\n"+INFO_HELP
+	INFO_WIN_B = "Player H(Blue) Won! Player M(Green) Lost!\n"+INFO_HELP
 	INFO_GAME_MM = "Playing against Minimax\nPress (q) to quit"
 	INFO_GAME_AB = "Playing against AlphaBeta\n(q) to quit"
 	INFO_GAME_H = "Playing against Human\nPress (q) to quit"
-	INFO_TURN_A = "Player M's turn (Red)\nPress (q) to quit"
-	INFO_TURN_B = "Player H's turn (Green)\nPress (q) to quit"
+	INFO_TURN_A = "Player M's turn (Green)\nPress (q) to quit"
+	INFO_TURN_B = "Player H's turn (Blue)\nPress (q) to quit"
 	INFO_TURN_RE_A = "That move is not legal! Try again\n"+INFO_TURN_A
 	INFO_TURN_RE_B = "That move is not legal! Try again\n"+INFO_TURN_B
 

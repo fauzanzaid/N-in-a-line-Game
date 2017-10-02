@@ -28,8 +28,8 @@ class GUI(threading.Thread):
 
 		self.TILE_SIZE = 40
 		self.COIN_SIZE = 30
-		self.COIN_COL_A = (1,0,0)
-		self.COIN_COL_B = (0,1,0)
+		self.COIN_COL_A = (0,1,0)
+		self.COIN_COL_B = (0,0,1)
 		self.LINE_SPACE = 16
 
 		self.P1_PAD = 20
@@ -73,6 +73,7 @@ class GUI(threading.Thread):
 	def draw_grid(self):
 
 		old_color = self.ttl.color()
+		old_size = self.ttl.pensize()
 
 		self.ttl.goto(self.P2_COOD_X - self.P2_PAD, self.P2_COOD_Y + self.P2_PAD)
 		self.ttl.seth(0)
@@ -91,10 +92,12 @@ class GUI(threading.Thread):
 		self.ttl.goto(self.P2_COOD_X - self.TILE_SIZE/2.0, self.P2_COOD_Y + self.TILE_SIZE*3/4.0)
 		self.ttl.seth(0)
 		self.ttl.color((1,0,0))
+		self.ttl.pensize(3)
 		self.ttl.pd()
 		self.ttl.fd(self.game_dim[1]*self.TILE_SIZE)
 		self.ttl.pu()
 
+		self.ttl.pensize(old_size)
 		self.ttl.color(old_color[0], old_color[1])
 
 
