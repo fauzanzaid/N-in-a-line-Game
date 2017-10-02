@@ -122,12 +122,7 @@ class GUI(threading.Thread):
 
 
 	def clear_grid(self):
-		for i in xrange(self.game_dim[1]):
-			for j in xrange(self.game_dim[0]):
-				cood_x = self.P2_COOD_X + i*self.TILE_SIZE
-				cood_y = self.P2_COOD_Y - j*self.TILE_SIZE
-				self.ttl.goto(cood_x, cood_y)
-				self.ttl.dot(self.COIN_SIZE, (1,1,1))
+		self.ttl.clear()
 
 
 	def display_info(self, text):
@@ -156,7 +151,6 @@ class GUI(threading.Thread):
 
 
 	def display_results(self, stats):
-
 		old_color = self.ttl.color()
 
 		self.ttl.goto(self.P1_COOD_X - self.P1_PAD, self.P1_COOD_Y + self.P1_PAD)

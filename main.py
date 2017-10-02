@@ -53,10 +53,15 @@ class Main(threading.Thread):
 		self.rdmz = rdmz
 
 		self.stats = {i:0 for i in xrange(1,14)}
+		self.results_displayed = False
 
 
 	def play(self, cont_A, cont_B):
 		self.send_cmd("clear_grid")
+		self.send_cmd("draw_grid")
+		if self.results_displayed == True:
+			self.send_cmd("display_results", self.stats)
+
 
 		if self.first == 0:
 			first = 0
@@ -222,3 +227,4 @@ class Main(threading.Thread):
 			elif arg == self.KEY_DISP_RES:
 				self.calculate_stats()
 				self.send_cmd("display_results", self.stats)
+				self.results_displayed = True
